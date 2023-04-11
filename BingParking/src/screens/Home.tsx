@@ -12,7 +12,7 @@ export const HomeScreen = () => {
       mediaType: 'photo',
       includeBase64: false,
       multiple: true,
-      maxFiles: 10,
+      maxFiles: 5,
     })
       .then((selectedImages) => {
         setImages(selectedImages);
@@ -26,7 +26,7 @@ export const HomeScreen = () => {
         <View style={t`flex flex-col w-full justify-center items-center`}>
             <Text style={t`text-green-500`}>HomeScreen</Text>
             <Text style={t`text-green-500`}>Good Luck BingParking Devs! ^^</Text>
-            <View style={t`flex flex-col w-50% h-25%`}>
+            <View style={t`flex flex-col w-full`}>
               <Text>Testing Multiple photo uploads.</Text>
               <Button title="Select Images" onPress={selectImages} />
               <FlatList
