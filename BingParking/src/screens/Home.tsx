@@ -5,7 +5,7 @@ import ImagePicker, { ImageOrVideo } from "react-native-image-crop-picker";
 
 export const HomeScreen = () => {
 
- const [images, setImages] = useState<ImageOrVideo[]>([]);
+  const [images, setImages] = useState<ImageOrVideo[]>([]);
 
   const selectImages = () => {
     ImagePicker.openPicker({
@@ -22,20 +22,20 @@ export const HomeScreen = () => {
       });
   };
 
-    return (
-        <View style={t`flex flex-col w-full justify-center items-center`}>
-            <Text style={t`text-green-500`}>HomeScreen</Text>
-            <Text style={t`text-green-500`}>Good Luck BingParking Devs! ^^</Text>
-            <View style={t`flex flex-col w-full`}>
-              <Text>Testing Multiple photo uploads.</Text>
-              <Button title="Select Images" onPress={selectImages} />
-              <FlatList
-               data={images}
-               renderItem={({ item }) => (
-               <Image source={{ uri: item.path }} style={{ width: 200, height: 200, margin: 10 }}/>)}
-               keyExtractor={(item) => item.path}
-               horizontal={true}/>
-            </View>
-        </View>
-    )
+  return (
+    <View style={t`flex flex-col w-full justify-center items-center`}>
+      <Text style={t`text-green-500`}>HomeScreen</Text>
+      <Text style={t`text-green-500`}>Good Luck BingParking Devs! ^^</Text>
+      <View style={t`flex flex-col w-full`}>
+        <Text>Testing Multiple photo uploads.</Text>
+        <Button title="Select Images" onPress={selectImages} />
+        <FlatList
+          data={images}
+          renderItem={({ item }) => (
+            <Image source={{ uri: item.path }} style={{ width: 200, height: 200, margin: 10 }} />)}
+          keyExtractor={(item) => item.path}
+          horizontal={true} />
+      </View>
+    </View>
+  )
 }; 
