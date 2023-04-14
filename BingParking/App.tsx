@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { OurStack } from './src/navigations/stack/Stack';
+import { StackScreen } from './src/navigations/stack/Stack';
+import UserContextProv from './src/contexts/userCont';
 
 export default function App() {
-  
   return (
+    <UserContextProv> 
     <NavigationContainer>
-       <OurStack />
+       <StackScreen />
     </NavigationContainer>
+    </UserContextProv>
   );
 };

@@ -2,10 +2,13 @@ import { Button, FlatList, Image, Text, TouchableOpacity, View } from "react-nat
 import { t } from "../utils/style"
 import { useState } from "react";
 import ImagePicker, { ImageOrVideo } from "react-native-image-crop-picker";
+import { useUserCont } from "../contexts/userCont";
 
 export const HomeScreen = ({navigation}: any) => {
 
   const [images, setImages] = useState<ImageOrVideo[]>([]);
+  const user = useUserCont();
+  console.log(user?.user); 
 
   const selectImages = () => {
     ImagePicker.openPicker({
