@@ -21,14 +21,16 @@ export const Login = ({navigation}: any) => {
         <Text style={[t`text-[48px] font-bold mt-[45px]`]}>Login to your</Text>
         <Text style={[t`text-[48px] font-bold text-[#999CF0]`]}>Account</Text>
         <View style={[t`mt-[45px]`]}>
-          <TextInput
-            style={[
+          <View style={[
               t`${
                 tap == 0
                   ? 'border-[#EEEEEE]'
                   : `${tap == 1 ? 'border-[#4448AE]' : 'border-[#EEEEEE]'}`
-              } w-[360px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] `,
-            ]}
+              } w-[360px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
+            ]}>
+              <Image style={[t`h-[20px] w-[20px] ml-[20px]`]} resizeMode="contain" source={{uri: "https://i.ibb.co/2Zy3MGd/Screen-Shot-2023-04-15-at-13-22-37.png"}}/>
+          <TextInput
+            style={[t`ml-[15px] w-[308px] h-[60px] ml-[12px]`]}
             onFocus={() => {
               setTap(1);
             }}
@@ -37,14 +39,17 @@ export const Login = ({navigation}: any) => {
             }}
             placeholder="Email"
           />
-          <TextInput
-            style={[
+          </View>
+          <View style={[
               t`${
                 tap == 2
                   ? 'border-[#EEEEEE]'
                   : `${tap == 3 ? 'border-[#4448AE]' : 'border-[#EEEEEE]'}`
-              } w-[360px] h-[60px] mt-[24px] bg-[#F8F7FD] border-[1px] rounded-[10px]`,
-            ]}
+              } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
+            ]}>
+              <Image style={[t`h-[20px] w-[20px] ml-[20px]`]} resizeMode="contain" source={{uri: "https://i.ibb.co/kHT8KqM/Screen-Shot-2023-04-15-at-13-28-14.png"}}/>
+          <TextInput
+            style={[t`ml-[15px] w-[308px] h-[60px] ml-[12px]`]}
             onFocus={() => {
               setTap(3);
             }}
@@ -53,6 +58,7 @@ export const Login = ({navigation}: any) => {
             }}
             placeholder="Password"
           />
+          </View>
           <View
             style={[t`flex flex-row items-center mt-[26px] justify-center`]}>
             <TouchableOpacity
@@ -83,7 +89,7 @@ export const Login = ({navigation}: any) => {
           onPress={() => ''}>
           <Text style={[t`text-white`]}>Sign in</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[t`flex w-[360px] mt-[24px] items-center`]}>
+        <TouchableOpacity onPress={() => navigation.navigate('')} style={[t`flex w-[360px] mt-[24px] items-center`]}>
           <Text style={[t`text-[#4D5DFA]`]}>Forgot the password?</Text>
         </TouchableOpacity>
         <View style={[t`mt-[30px] w-[360px] h-[65px] flex flex-col`]}>
@@ -95,7 +101,7 @@ export const Login = ({navigation}: any) => {
           </View>
           <View
             style={[
-              t`w-[360px] h-[60px] mt-[20px] flex flex-row justify-between items-center`,
+              t`w-[360px] h-[60px] mt-[20px] flex flex-row justify-around items-center`,
             ]}>
             <TouchableOpacity
               style={[
