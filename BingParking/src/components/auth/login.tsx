@@ -1,45 +1,149 @@
-import { Button, FlatList, Image, Text, TextInput, TouchableOpacity, View } from "react-native"
-import { t } from "../../utils/style"
-import { useState } from "react";
+import {
+  Button,
+  FlatList,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {t} from '../../utils/style';
+import {useState} from 'react';
 
-export const Login = ({navigation}:any) => {
-    return(
-        <View style={[t`w-full h-full bg-white flex justify-center items-center`]}>
-            <View style={[t`w-[360px] h-full`]}>
-            <Text style={[t`text-[48px] font-bold mt-[68px]`]}>Login to your</Text>
-            <Text style={[t`text-[48px] font-bold text-[#999CF0]`]}>Account</Text>
-      <View style={[t`mt-[78px]`]}>
-        <TextInput style={[t`w-[360px] h-[60px] bg-[#F8F7FD] border-[1px] border-[#EEEEEE] rounded-[10px]`]} placeholder="Email"/>
-        <TextInput style={[t`w-[360px] h-[60px] bg-[#F8F7FD] border-[1px] border-[#EEEEEE] mt-[24px] rounded-[10px]`]}  placeholder="Password"/>
-        <View style={[t`flex flex-row items-center mt-[26px] justify-center`]}><TouchableOpacity style={[t`h-[24px] w-[24px] border-[#4448AE] rounded-[4px] border-[1px] mr-[10px]`]}></TouchableOpacity><Text>Remember me</Text></View>
-      </View>
-      <View style={[t`flex justify-center w-full`]}>
-      <TouchableOpacity><Text style={[t`text-[#4D5DFA]`]}>Forgot the password?</Text></TouchableOpacity></View>
-      <TouchableOpacity
-        style={[
-          t`bg-[#9C9FF0] mt-[20px] w-[360px] h-[58px] rounded-[10px] flex items-center justify-center`,
-        ]}
-        onPress={() => ""}>
-        <Text style={[t`text-white`]}>Sign in</Text>
-      </TouchableOpacity>
-      <View
-        style={[
-          t`mt-[30px] w-[360px] h-[45px] flex flex-row justify-between items-center`,
-        ]}>
-        <View style={[t`border-[1px] h-[0px] w-[96px] border-[#EEEEEE]`]} />
-        <Text>or continue with</Text>
-        <View style={[t`border-[1px] h-[0px] w-[96px] border-[#EEEEEE]`]} />
-      </View>
-      <View style={[t`flex flex-row mt-[70px] justify-center`]}>
-        <Text style={[t`mr-[8px]`]}>Don't have an account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-          <Text style={[t`text-[#4448AE] font-semibold`]}>Sign up</Text>
-        </TouchableOpacity>
-      </View>
-      </View>
+export const Login = ({navigation}: any) => {
+  const [tap, setTap] = useState<any>(0);
+  const [check, setCheck] = useState<boolean>(false);
+  const borderColor = tap ? 'border-blue-500' : 'border-gray-500';
+
+  return (
+    <View style={[t`w-full h-full bg-white flex justify-center items-center`]}>
+      <View style={[t`w-[360px] h-full`]}>
+        <Text style={[t`text-[48px] font-bold mt-[45px]`]}>Login to your</Text>
+        <Text style={[t`text-[48px] font-bold text-[#999CF0]`]}>Account</Text>
+        <View style={[t`mt-[45px]`]}>
+          <TextInput
+            style={[
+              t`${
+                tap == 0
+                  ? 'border-[#EEEEEE]'
+                  : `${tap == 1 ? 'border-[#4448AE]' : 'border-[#EEEEEE]'}`
+              } w-[360px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] `,
+            ]}
+            onFocus={() => {
+              setTap(1);
+            }}
+            onBlur={() => {
+              setTap(0);
+            }}
+            placeholder="Email"
+          />
+          <TextInput
+            style={[
+              t`${
+                tap == 2
+                  ? 'border-[#EEEEEE]'
+                  : `${tap == 3 ? 'border-[#4448AE]' : 'border-[#EEEEEE]'}`
+              } w-[360px] h-[60px] mt-[24px] bg-[#F8F7FD] border-[1px] rounded-[10px]`,
+            ]}
+            onFocus={() => {
+              setTap(3);
+            }}
+            onBlur={() => {
+              setTap(2);
+            }}
+            placeholder="Password"
+          />
+          <View
+            style={[t`flex flex-row items-center mt-[26px] justify-center`]}>
+            <TouchableOpacity
+              style={[t`mr-[10px]`]}
+              onPress={() => {
+                check ? setCheck(false) : setCheck(true);
+              }}>
+              <Image
+                style={[t`w-[24px] h-[24px]`]}
+                source={
+                  check
+                    ? {
+                        uri: 'https://i.ibb.co/TKzrT42/Screen-Shot-2023-04-15-at-11-45-16.png',
+                      }
+                    : {
+                        uri: 'https://i.ibb.co/3R63W5q/Screen-Shot-2023-04-15-at-11-48-37.png',
+                      }
+                }></Image>
+            </TouchableOpacity>
+            <Text>Remember me</Text>
+          </View>
         </View>
-    )
-}
-
+        <View style={[t`flex justify-center w-full`]}></View>
+        <TouchableOpacity
+          style={[
+            t`bg-[#9C9FF0] mt-[20px] w-[360px] h-[58px] rounded-[10px] flex items-center justify-center`,
+          ]}
+          onPress={() => ''}>
+          <Text style={[t`text-white`]}>Sign in</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[t`flex w-[360px] mt-[24px] items-center`]}>
+          <Text style={[t`text-[#4D5DFA]`]}>Forgot the password?</Text>
+        </TouchableOpacity>
+        <View style={[t`mt-[30px] w-[360px] h-[65px] flex flex-col`]}>
+          <View
+            style={[t`w-[360px] flex flex-row justify-between items-center`]}>
+            <View style={[t`border-[1px] h-[0px] w-[96px] border-[#EEEEEE]`]} />
+            <Text>or continue with</Text>
+            <View style={[t`border-[1px] h-[0px] w-[96px] border-[#EEEEEE]`]} />
+          </View>
+          <View
+            style={[
+              t`w-[360px] h-[60px] mt-[20px] flex flex-row justify-between items-center`,
+            ]}>
+            <TouchableOpacity
+              style={[
+                t`w-[88px] h-[60px] border-[#EEEEEE] border-[1px] flex justify-center items-center rounded-[16px]`,
+              ]}>
+              <Image
+                style={[t`w-[24px] h-[24px]`]}
+                resizeMode="contain"
+                source={{
+                  uri: 'https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/1200px-Facebook_f_logo_%282021%29.svg.png',
+                }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                t`w-[88px] h-[60px] border-[#EEEEEE] border-[1px] flex justify-center items-center rounded-[16px]`,
+              ]}>
+              <Image
+                style={[t`w-[24px] h-[24px]`]}
+                resizeMode="contain"
+                source={{
+                  uri: 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png',
+                }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                t`w-[88px] h-[60px] border-[#EEEEEE] border-[1px] flex justify-center items-center rounded-[16px]`,
+              ]}>
+              <Image
+                style={[t`w-[24px] h-[24px]`]}
+                resizeMode="contain"
+                source={{
+                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdQO_TyUapVDKPk9N3tV2tYI_0rWwM2fiSOQ&usqp=CAU',
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={[t`flex flex-row mt-[70px] justify-center`]}>
+          <Text style={[t`mr-[8px]`]}>Don't have an account?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <Text style={[t`text-[#4448AE] font-semibold`]}>Sign up</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+};
 
 export default Login;
