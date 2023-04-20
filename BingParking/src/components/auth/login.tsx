@@ -86,7 +86,7 @@ export const Login = ({navigation}: any) => {
           style={[
             t`bg-[#9C9FF0] mt-[20px] w-[360px] h-[58px] rounded-[10px] flex items-center justify-center`,
           ]}
-          onPress={() => ''}>
+          onPress={() => {}}>
           <Text style={[t`text-white`]}>Sign in</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('')} style={[t`flex w-[360px] mt-[24px] items-center`]}>
