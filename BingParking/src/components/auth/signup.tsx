@@ -86,7 +86,7 @@ export const Signup = ({navigation}: any) => {
           style={[
             t`bg-[#9C9FF0] mt-[20px] w-[360px] h-[58px] rounded-[10px] flex items-center justify-center`,
           ]}
-          onPress={() => ''}>
+          onPress={() => {navigation.navigate('ProfileSetUp')}}>
           <Text style={[t`text-white`]}>Sign up</Text>
         </TouchableOpacity>
         <View style={[t`mt-[42px] w-[360px] h-[65px] flex flex-col`]}>
