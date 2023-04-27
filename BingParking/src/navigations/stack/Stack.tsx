@@ -3,7 +3,7 @@ import { Header } from '../../components/Header';
 import Login from '../../components/auth/login';
 import { ProfSetUp, Signup, Starter } from '../../components/auth';
 import { TabScreen } from '../tab/Tab';
-import { TutorialOne, TutorialTwo, TutorialThree, TutorialFour } from '../../components/baseScreen/index';
+import { BaseOne, BaseTwo, BaseThree, BaseFour } from '../../components/baseScreen/index';
 
 
 export const StackScreen = () => {
@@ -18,22 +18,22 @@ export const StackScreen = () => {
       <Stack.Screen name="ProfileSetUp" component={ProfSetUp} options={{ header: (e: any) => <Header title="Fill Your Profile" navigation={e.navigation} /> }} />
       <Stack.Screen
         name="TutoirialOne"
-        component={TutorialOne}
+        component={BaseOne}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="TutorialTwo"
-        component={TutorialTwo}
+        component={BaseTwo}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="TutorialThree"
-        component={TutorialThree}
+        component={BaseThree}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="TutorialFour"
-        component={TutorialFour}
+        component={BaseFour}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

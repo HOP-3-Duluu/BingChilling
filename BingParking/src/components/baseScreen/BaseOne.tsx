@@ -2,7 +2,7 @@ import { Button, FlatList, Image, Text, View } from "react-native"
 import { styles, t } from "../../utils/style"
 import { useState } from "react";
 
-const TutorialOne = ({ navigation, route }: any) => {
+const BaseOne = ({ navigation, route }: any) => {
 
     const [clr , setClr] = useState<boolean>(false);
 
@@ -34,4 +34,4 @@ const TutorialOne = ({ navigation, route }: any) => {
     )
 }; 
 
-export default TutorialOne
+export default BaseOne;

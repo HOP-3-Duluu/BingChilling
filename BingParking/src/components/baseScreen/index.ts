@@ -1,4 +1,4 @@
-export { default as TutorialOne } from './TutorialOne';
-export { default as TutorialTwo } from './TutorialTwo';
-export { default as TutorialThree } from './TutorialThree';
-export { default as TutorialFour } from './TutorialFour';
+export { default as BaseOne } from './BaseOne';
+export { default as BaseTwo } from './BaseTwo';
+export { default as BaseThree } from './BaseThree';
+export { default as BaseFour } from './BaseFour';

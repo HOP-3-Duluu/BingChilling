@@ -4,7 +4,7 @@ import { styles, t } from "../../utils/style"
 import { useEffect, } from "react";
 import { useIsFocused } from '@react-navigation/native';
 
-const TutorialFour = ({ navigation, route }: any) => {
+const BaseFour = ({ navigation, route }: any) => {
     const isFocused = useIsFocused()
     const width = useSharedValue(0);
     const animatedStyles = useAnimatedStyle(() => {
@@ -63,4 +63,4 @@ const TutorialFour = ({ navigation, route }: any) => {
     )
 };
 
-export default TutorialFour
+export default BaseFour;
