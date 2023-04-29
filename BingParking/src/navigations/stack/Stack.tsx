@@ -3,7 +3,8 @@ import { Header } from '../../components/Header';
 import Login from '../../components/auth/login';
 import { ProfSetUp, Signup, Starter } from '../../components/auth';
 import { TabScreen } from '../tab/Tab';
-import { BaseOne, BaseTwo, BaseThree, BaseFour } from '../../components/baseScreen/index';
+import { BaseOne, BaseTwo, BaseThree, BaseFour } from '../../components/baseScreen';
+import { Notification } from '../../components/notif/Notif';
 
 
 export const StackScreen = () => {
@@ -16,11 +17,7 @@ export const StackScreen = () => {
       <Stack.Screen name="Signup" component={Signup} options={{ header: (e: any) => <Header navigation={e.navigation} /> }} />
       <Stack.Screen name="Starter" component={Starter} options={{ header: (e: any) => <Header navigation={e.navigation} /> }} />
       <Stack.Screen name="ProfileSetUp" component={ProfSetUp} options={{ header: (e: any) => <Header title="Fill Your Profile" navigation={e.navigation} /> }} />
-      <Stack.Screen
-        name="TutoirialOne"
-        component={BaseOne}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="TutorialOne" component={BaseOne} options={{ headerShown: false }}/>
       <Stack.Screen
         name="TutorialTwo"
         component={BaseTwo}
@@ -34,8 +31,8 @@ export const StackScreen = () => {
       <Stack.Screen
         name="TutorialFour"
         component={BaseFour}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
+        options={{ headerShown: false }}/>
+        <Stack.Screen name='Notif' component={Notification} options={{header: (e: any) => <Header navigation={e.navigation} title="Notification"/>}}/>
+      </Stack.Navigator>
   )
 }

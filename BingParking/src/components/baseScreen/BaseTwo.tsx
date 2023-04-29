@@ -54,7 +54,7 @@ const BaseTwo = ({ navigation, route }: any) => {
                     onPress={() => {
                         (width.value = withSpring(0))
 
-                        navigation.navigate('TutoirialOne')
+                        navigation.navigate('TutorialOne')
                     }
                     }
                 />
