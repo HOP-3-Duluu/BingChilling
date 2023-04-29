@@ -1,4 +1,4 @@
-import { Button, FlatList, Image, Text, View } from "react-native"
+import { Button, Image, Text, View } from "react-native"
 import { styles, t } from "../../utils/style"
 import { useState } from "react";
 
