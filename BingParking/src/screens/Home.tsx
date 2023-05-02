@@ -5,7 +5,6 @@ import ImagePicker, { ImageOrVideo } from "react-native-image-crop-picker";
 import { useUserCont } from "../contexts/userCont";
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import { Banner } from "../components/tempo/Banner";
-import Modal from 'react-native-modalbox';
 
 
 export const HomeScreen = ({ navigation }: any) => {

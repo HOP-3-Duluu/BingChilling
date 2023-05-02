@@ -7,7 +7,6 @@ import { BaseOne, BaseTwo, BaseThree, BaseFour } from '../../components/baseScre
 import { Notification } from '../../components/notif/Notif';
 import { Banner } from '../../components/tempo/Banner';
 
-
 export const StackScreen = () => {
 
   const Stack = createNativeStackNavigator();
@@ -15,8 +14,8 @@ export const StackScreen = () => {
     <Stack.Navigator>
       <Stack.Screen name="Home" component={TabScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={Login} options={{ header: (e: any) => <Header navigation={e.navigation} /> }} />
-      <Stack.Screen name="Signup" component={Signup} options={{ header: (e: any) => <Header navigation={e.navigation} /> }} />
-      <Stack.Screen name="Starter" component={Starter} options={{ header: (e: any) => <Header navigation={e.navigation} /> }} />
+      <Stack.Screen name="Signup" component={Signup} options={{ header: (e: any) => <Header navigation={e.navigation}/> }} />
+      <Stack.Screen name="Starter" component={Starter} options={{ header: (e: any) => <Header navigation={e.navigation}/> }} />
       <Stack.Screen name="ProfileSetUp" component={ProfSetUp} options={{ header: (e: any) => <Header title="Fill Your Profile" navigation={e.navigation} /> }} />
       <Stack.Screen name="TutorialOne" component={BaseOne} options={{ headerShown: false }}/>
       <Stack.Screen
@@ -33,7 +32,8 @@ export const StackScreen = () => {
         name="TutorialFour"
         component={BaseFour}
         options={{ headerShown: false }}/>
-        <Stack.Screen name='Notif' component={Notification} options={{header: (e: any) => <Header navigation={e.navigation} title="Notification"/>}}/>
+        <Stack.Screen name='Notif' component={Notification} options={{header: (e: any) => <Header navigation={e.navigation} bg="#F8F7FD" title="Notification"/>}}/>
+        {/* now you can add color to the background on header */}
       </Stack.Navigator>
-  )
-}
+  );
+};
