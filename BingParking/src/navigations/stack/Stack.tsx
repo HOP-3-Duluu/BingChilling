@@ -5,7 +5,6 @@ import { ProfSetUp, Signup, Starter } from '../../components/auth';
 import { TabScreen } from '../tab/Tab';
 import { BaseOne, BaseTwo, BaseThree, BaseFour } from '../../components/baseScreen';
 import { Notification } from '../../components/notif/Notif';
-import { Banner } from '../../components/tempo/Banner';
 
 
 export const StackScreen = () => {

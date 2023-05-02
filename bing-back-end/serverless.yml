@@ -64,12 +64,12 @@ provider:
 #    - include-me-dir/**
 
 functions:
-  createUser:
-    handler: src/users/createUser.createUsr
+  helloBing:
+    handler: src/bing.HelloBing
     events:
       - http:
-          path: /user
-          method: post
+          path: /hello
+          method: GET
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
