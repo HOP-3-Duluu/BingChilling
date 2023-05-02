@@ -11,7 +11,7 @@ export const Header = ({navigation , bg ,title}: any) => {
           <Icon style={[t``]} name="arrow-back-outline" color={"black"} size={25}></Icon>
         </TouchableOpacity>
         <View style={[t`w-[300px]`]}>
-          <Text style={[t` font-bold`, {fontSize:24}]}>{title}</Text></View>
+          <Text style={[t`font-bold`, {fontSize:24}]}>{title}</Text></View>
           </View>
       </View>
   );

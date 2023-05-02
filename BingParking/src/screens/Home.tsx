@@ -48,6 +48,7 @@ export const HomeScreen = ({ navigation }: any) => {
                <IonIcons name="notifications-outline" size={24} color={"#4448AE"}/>
             </TouchableOpacity>
             <Banner name={"Ulanbator City"} dis={0.5} dur={30}/>
+            <TouchableOpacity  onPress={() => navigation?.navigate('Forgot')}><Text>Forgot</Text></TouchableOpacity>
         </View>
     )
 }; 
