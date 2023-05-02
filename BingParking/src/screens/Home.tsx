@@ -4,6 +4,8 @@ import { useState } from "react";
 import ImagePicker, { ImageOrVideo } from "react-native-image-crop-picker";
 import { useUserCont } from "../contexts/userCont";
 import IonIcons from 'react-native-vector-icons/Ionicons';
+import { Banner } from "../components/tempo/Banner";
+import Modal from 'react-native-modalbox';
 
 
 export const HomeScreen = ({ navigation }: any) => {
@@ -39,13 +41,14 @@ export const HomeScreen = ({ navigation }: any) => {
                renderItem={({ item }) => (
                <Image source={{ uri: item.path }} style={{ width: 200, height: 200, margin: 10 }}/>)}
                keyExtractor={(item) => item.path}
-               horizontal={true}/>
+               horizontal={true}/>  
             </View>
             <TouchableOpacity  onPress={() => navigation?.navigate('Starter')}><Text>User-Authentication UI</Text></TouchableOpacity>
             <TouchableOpacity onPress={() => navigation?.navigate('TutorialOne')}><Text>Tutorial</Text></TouchableOpacity>
             <TouchableOpacity style={t`flex flex-col justify-center items-center rounded-full bg-white w-[52px] h-[52px]`} onPress={() => navigation?.navigate('Notif')}>
                <IonIcons name="notifications-outline" size={24} color={"#4448AE"}/>
             </TouchableOpacity>
+            <Banner name={"Ulanbator City"} dis={0.5} dur={30}/>
         </View>
     )
 }; 
