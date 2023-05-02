@@ -9,6 +9,9 @@
     <string>fonts/Foundation.ttf</string>
     <string>fonts/MaterialCommunityIcons.ttf</string>
     <string>fonts/MaterialIcons.ttf</string>
+	<string>fonts/Fontisto.ttf</string>
+	<string>fonts/AntDesign.ttf</string>
+	<string>fonts/Feather.ttf</string>
     </array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
