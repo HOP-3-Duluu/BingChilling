@@ -78,6 +78,18 @@ PODS:
   - hermes-engine (0.70.6)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
+  - Permission-AppTrackingTransparency (3.8.0):
+    - RNPermissions
+  - Permission-Camera (3.8.0):
+    - RNPermissions
+  - Permission-LocationWhenInUse (3.8.0):
+    - RNPermissions
+  - Permission-MediaLibrary (3.8.0):
+    - RNPermissions
+  - Permission-Notifications (3.8.0):
+    - RNPermissions
+  - Permission-PhotoLibrary (3.8.0):
+    - RNPermissions
   - RCT-Folly (2021.07.22.00):
     - boost
     - DoubleConversion
@@ -306,6 +318,10 @@ PODS:
     - glog
   - react-native-blur (4.3.1):
     - React-Core
+  - react-native-geolocation-service (5.3.1):
+    - React
+  - react-native-maps (1.7.1):
+    - React-Core
   - react-native-safe-area-context (4.5.2):
     - RCT-Folly
     - RCTRequired
@@ -378,9 +394,9 @@ PODS:
     - React-jsi (= 0.70.6)
     - React-logger (= 0.70.6)
     - React-perflogger (= 0.70.6)
-  - RNCMaskedView (0.2.9):
+  - RNAWSCognito (6.2.0):
     - React-Core
-  - RNDateTimePicker (7.0.1):
+  - RNCMaskedView (0.2.9):
     - React-Core
   - RNGestureHandler (2.9.0):
     - React-Core
@@ -393,6 +409,13 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
+  - RNNotifee (7.7.1):
+    - React-Core
+    - RNNotifee/NotifeeCore (= 7.7.1)
+  - RNNotifee/NotifeeCore (7.7.1):
+    - React-Core
+  - RNPermissions (3.8.0):
+    - React-Core
   - RNReanimated (3.1.0):
     - DoubleConversion
     - FBLazyVector
@@ -423,6 +446,8 @@ PODS:
   - RNScreens (3.20.0):
     - React-Core
     - React-RCTImage
+  - RNSVG (13.9.0):
+    - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
   - SocketRocket (0.6.0)
@@ -462,6 +487,12 @@ DEPENDENCIES:
   - hermes-engine (from `../node_modules/react-native/sdks/hermes/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
   - OpenSSL-Universal (= 1.1.1100)
+  - Permission-AppTrackingTransparency (from `../node_modules/react-native-permissions/ios/AppTrackingTransparency`)
+  - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
+  - Permission-LocationWhenInUse (from `../node_modules/react-native-permissions/ios/LocationWhenInUse`)
+  - Permission-MediaLibrary (from `../node_modules/react-native-permissions/ios/MediaLibrary`)
+  - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications`)
+  - Permission-PhotoLibrary (from `../node_modules/react-native-permissions/ios/PhotoLibrary`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -480,6 +511,8 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
+  - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
+  - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -493,12 +526,15 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
-  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - "RNNotifee (from `../node_modules/@notifee/react-native`)"
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -536,6 +572,18 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes/hermes-engine.podspec"
+  Permission-AppTrackingTransparency:
+    :path: "../node_modules/react-native-permissions/ios/AppTrackingTransparency"
+  Permission-Camera:
+    :path: "../node_modules/react-native-permissions/ios/Camera"
+  Permission-LocationWhenInUse:
+    :path: "../node_modules/react-native-permissions/ios/LocationWhenInUse"
+  Permission-MediaLibrary:
+    :path: "../node_modules/react-native-permissions/ios/MediaLibrary"
+  Permission-Notifications:
+    :path: "../node_modules/react-native-permissions/ios/Notifications"
+  Permission-PhotoLibrary:
+    :path: "../node_modules/react-native-permissions/ios/PhotoLibrary"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -568,6 +616,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   react-native-blur:
     :path: "../node_modules/@react-native-community/blur"
+  react-native-geolocation-service:
+    :path: "../node_modules/react-native-geolocation-service"
+  react-native-maps:
+    :path: "../node_modules/react-native-maps"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-perflogger:
@@ -594,18 +646,24 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNAWSCognito:
+    :path: "../node_modules/amazon-cognito-identity-js"
   RNCMaskedView:
     :path: "../node_modules/@react-native-masked-view/masked-view"
-  RNDateTimePicker:
-    :path: "../node_modules/@react-native-community/datetimepicker"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNNotifee:
+    :path: "../node_modules/@notifee/react-native"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -632,6 +690,12 @@ SPEC CHECKSUMS:
   hermes-engine: 2af7b7a59128f250adfd86f15aa1d5a2ecd39995
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
+  Permission-AppTrackingTransparency: 7a48e816f801d10f2402c5b4edbe620ad8a412d9
+  Permission-Camera: e6d142d7d8b714afe0a83e5e6ae17eb949f1e3e9
+  Permission-LocationWhenInUse: 1c80e4797ae587642a83125e80b86686cefeba53
+  Permission-MediaLibrary: 6a5888dd77669b568716bea80c21340aaab74c51
+  Permission-Notifications: aa91ec29236626ff59cb60e08389c0a59a9d32c5
+  Permission-PhotoLibrary: 31787bbe77d0d3ae6a5267b8435e4a2e9ef78f1d
   RCT-Folly: 0080d0a6ebf2577475bda044aa59e2ca1f909cda
   RCTRequired: e1866f61af7049eb3d8e08e8b133abd38bc1ca7a
   RCTTypeSafety: 27c2ac1b00609a432ced1ae701247593f07f901e
@@ -648,6 +712,8 @@ SPEC CHECKSUMS:
   React-jsinspector: 60769e5a0a6d4b32294a2456077f59d0266f9a8b
   React-logger: 1623c216abaa88974afce404dc8f479406bbc3a0
   react-native-blur: 52e2902df618ace97b3554aeb7f6a2d7ca3b5e9b
+  react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
+  react-native-maps: 667f9b975549c6fa9b1631bf859440f68ebd3b8f
   react-native-safe-area-context: 1d596539b05a78f2b346e954e7c577f6f9be7544
   React-perflogger: 8c79399b0500a30ee8152d0f9f11beae7fc36595
   React-RCTActionSheet: 7316773acabb374642b926c19aef1c115df5c466
@@ -661,18 +727,21 @@ SPEC CHECKSUMS:
   React-RCTVibration: c75ceef7aa60a33b2d5731ebe5800ddde40cefc4
   React-runtimeexecutor: 15437b576139df27635400de0599d9844f1ab817
   ReactCommon: 349be31adeecffc7986a0de875d7fb0dcf4e251c
+  RNAWSCognito: 100c2a1e21010f4e201d8ac43deb400b8d5e7ba6
   RNCMaskedView: 949696f25ec596bfc697fc88e6f95cf0c79669b6
-  RNDateTimePicker: e073697ac3e8a378968d68ab0581fef542b8af8a
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNImageCropPicker: 14fe1c29298fb4018f3186f455c475ab107da332
+  RNNotifee: 05692d7bb42b6c718a3906aeb8431c48ff2e8097
+  RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
   RNReanimated: 47df570b2e2b9eba34e78a299dd6d44596ff7bb6
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
+  RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 99caf8d5ab45e9d637ee6e0174ec16fbbb01bcfc
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 57e8c36a69e4112712862b0f7a3df4cd6cea11df
+PODFILE CHECKSUM: cd3612062657fba10cb7a84a387f8537216b72c0
 
 COCOAPODS: 1.12.0

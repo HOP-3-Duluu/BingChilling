@@ -1,0 +1,6 @@
+  createUser:
+    handler: src/users/createUser.createUsr
+    events:
+      - http:
+          path: /user
+          method: post

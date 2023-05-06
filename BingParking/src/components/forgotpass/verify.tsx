@@ -1,10 +1,8 @@
 import React, { useState, useRef, useEffect } from "react"
-import { Image, ImageBackground, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Image, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { t } from "../../utils/style"
 import LinearGradient from 'react-native-linear-gradient'
 const Verify = ({ navigation }: any) => {
-
-    const [phone, setPhone] = useState<any>();
     const firstInput = useRef<any>();
     const second = useRef<any>();
     const third = useRef<any>();

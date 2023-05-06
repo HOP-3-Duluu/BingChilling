@@ -5,17 +5,15 @@ import { ProfSetUp, Signup, Starter } from '../../components/auth';
 import { TabScreen } from '../tab/Tab';
 import { BaseOne, BaseTwo, BaseThree, BaseFour } from '../../components/baseScreen';
 import { Notification } from '../../components/notif/Notif';
-import { Banner } from '../../components/tempo/Banner';
-import { Forgotpass } from '../../screens/forgotpass';
-import Verify from '../../screens/forgotpass/verify';
-import Createnewpass from '../../screens/forgotpass/cnp';
+import { Forgotpass } from '../../components/forgotpass';
+import Verify from '../../components/forgotpass/verify';
+import Createnewpass from '../../components/forgotpass/cnp';
+
 
 
 export const StackScreen = () => {
 
   const Stack = createNativeStackNavigator();
-  //now you can add color to the background on header
-  
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={TabScreen} options={{headerShown: false}}/>

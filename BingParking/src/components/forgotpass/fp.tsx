@@ -1,9 +1,7 @@
-import { Button, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import React, { useState } from "react";
-import ImagePicker, { ImageOrVideo } from "react-native-image-crop-picker";
 import { t } from "../../utils/style";
 import LinearGradient from 'react-native-linear-gradient'
-import Modal from "react-native-modal";
 import Icon from "react-native-vector-icons/AntDesign";
 import IconMail from "react-native-vector-icons/Feather";
 

@@ -1,4 +1,4 @@
-import { Alert, Button, Image, Pressable, Text, TouchableOpacity, View } from "react-native"
+import { Image, Text, TouchableOpacity, View } from "react-native"
 import LinearGradient from 'react-native-linear-gradient'
 import { t } from "../../utils/style"
 import { TextInput } from "react-native-gesture-handler"
@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/Fontisto"
 import Ion from 'react-native-vector-icons/Ionicons'
 import { useState } from "react"
 import Modal from "react-native-modal";
-import { BlurView } from "@react-native-community/blur";
+
 const Createnewpass = ({ navigation }: any) => {
     const [ch, setCh] = useState<boolean>(false);
     const [checked, setChecked] = useState<boolean>(false);

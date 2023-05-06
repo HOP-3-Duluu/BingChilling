@@ -1,3 +1,5 @@
 import axios from "axios";
-
-//AXIOS WILL BE USED HERE SOON. IN DEVELOPMENT...
+axios.create({
+    baseURL: ``,
+    headers: {'Access-Control-Allow-Origin': '*'}
+}); 

@@ -15,6 +15,10 @@
     </array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>GMSApiKey</key>
+    <string>AIzaSyAF76A1JtzoJ2hkIMZQCFegkvo9GSXlYKk</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>{YOUR_APP_NAME} needs access to your location to gain access.</string>
 	<key>CFBundleDisplayName</key>
 	<string>BingParking</string>
 	<key>CFBundleExecutable</key>

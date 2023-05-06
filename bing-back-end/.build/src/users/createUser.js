@@ -37,14 +37,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createUsr = void 0;
+// console.log(date.includes('Today') ? date : moment(new Date(date)).format('LL')); 
+// const date = moment(new Date('2023-4-19')).calendar(); 
 // env;
 var createUsr = function (e) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, fname, name, date, mail, phone, pic, gender;
+    var _a, fname, name, mail, phone, pic, gender, role;
     return __generator(this, function (_b) {
-        _a = JSON.parse(e === null || e === void 0 ? void 0 : e.body), fname = _a.fname, name = _a.name, date = _a.date, mail = _a.mail, phone = _a.phone, pic = _a.pic, gender = _a.gender;
+        _a = JSON.parse(e === null || e === void 0 ? void 0 : e.body), fname = _a.fname, name = _a.name, mail = _a.mail, phone = _a.phone, pic = _a.pic, gender = _a.gender, role = _a.role;
         try {
-            // console.log(date.includes('Today') ? date : moment(new Date(date)).format('LL')); 
-            // const date = moment(new Date('2023-4-19')).calendar(); 
         }
         catch (err) {
             console.log(err);

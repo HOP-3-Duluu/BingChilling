@@ -1,0 +1,7 @@
+  getLocations:
+    handler: src/main/getLocations.getLocs
+    events:
+      - http:
+          path: /locations
+          method: get
+          cors: true

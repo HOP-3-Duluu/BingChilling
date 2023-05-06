@@ -10,6 +10,7 @@ export const TabScreen = () => {
                 options={{
                     tabBarLabel: "Home",
                     tabBarIcon: ({color}) => (<Icon name="home" color={color} size={25} ></Icon>),
+                    tabBarActiveTintColor: '#4448AE',
                     headerShown: false
                 }}/>
             <Tab.Screen options={{

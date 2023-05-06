@@ -36,14 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HelloBing = void 0;
-var HelloBing = function (e) { return __awaiter(void 0, void 0, void 0, function () {
+exports.getLocs = void 0;
+var getLocs = function (e) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         return [2 /*return*/, {
                 statusCode: 200,
-                body: JSON.stringify("Hello from Bing!")
+                body: ''
             }];
     });
 }); };
-exports.HelloBing = HelloBing;
-//# sourceMappingURL=bing.js.map
+exports.getLocs = getLocs;
+//# sourceMappingURL=getLocations.js.map
