@@ -3,6 +3,7 @@ import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-na
 import { styles, t } from "../../utils/style"
 import { useEffect, } from "react";
 import { useIsFocused } from '@react-navigation/native';
+import { asyncStorage } from "../../utils/aws";
 
 const BaseFour = ({ navigation, route }: any) => {
     const isFocused = useIsFocused()
@@ -40,11 +41,12 @@ const BaseFour = ({ navigation, route }: any) => {
             <View style={t`flex w-full bg-${styles.colors.submain} p-2 w-[368px] h-[58px] mb-[17px] mt-[17px] rounded-lg text-white text-white `}>
                 <Button
                     color="#FFFFFF"
-                    title="Next"
+                    title="Authenticate"
                     onPress={() => {
                         (width.value = withSpring(0))
-                        navigation.navigate('TutorialFour')
-                    }
+                        asyncStorage?.setItem(`intro` , 'onEnd');
+                        navigation.navigate('Starter')
+                     }
                     }
                 />
             </View >

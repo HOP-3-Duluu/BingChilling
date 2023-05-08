@@ -1,13 +1,4 @@
-import {
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image,Keyboard,KeyboardAvoidingView,Platform,Text,TextInput,TouchableOpacity,View} from 'react-native';
 import ImagePicker, { ImageOrVideo } from "react-native-image-crop-picker";
 import {t} from '../../utils/style';
 import {useEffect, useState} from 'react';

@@ -1,19 +1,41 @@
-import {
-  Button,
-  FlatList,
-  Image,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image,Text,TextInput,TouchableOpacity,View} from 'react-native';
 import {t} from '../../utils/style';
 import {useState} from 'react';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
+import { asyncStorage, cognitoClient, userPool } from '../../utils/aws';
+import { useUserCont } from '../../contexts/userCont';
 
 export const Login = ({navigation}: any) => {
   const [tap, setTap] = useState<any>(0);
   const [check, setCheck] = useState<boolean>(false);
-  const borderColor = tap ? 'border-blue-500' : 'border-gray-500';
+  // const borderColor = tap ? 'border-blue-500' : 'border-gray-500';
+  const usr = useUserCont();
+  GoogleSignin.configure({
+    webClientId: '',
+  });
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await new Promise(async(res , rej) => {
+        const { idToken, user } = await GoogleSignin.signIn();
+        const cogUser = new CognitoUser({
+          Username: user?.familyName as string, 
+          Pool: userPool,
+        });
+    
+        const userData = {Username: user?.familyName, Password: "TempPassword123!"} , details = new AuthenticationDetails(userData as any); 
+        if(idToken) {
+          cogUser.authenticateUser(details, {
+              onSuccess: result => {res(result), asyncStorage?.setItem(`name` , user?.familyName as string), usr?.setIsLogged(true)},
+              onFailure: err => rej(`Rejected: ${err}`),
+            });
+         };
+      });
+    } catch (error) {
+      console.log(error);
+    };
+  };
 
   return (
     <View style={[t`w-full h-full bg-white flex justify-center items-center`]}>
@@ -118,7 +140,7 @@ export const Login = ({navigation}: any) => {
             <TouchableOpacity
               style={[
                 t`w-[88px] h-[60px] border-[#EEEEEE] border-[1px] flex justify-center items-center rounded-[16px]`,
-              ]}>
+              ]} onPress={handleGoogleSignIn}>
               <Image
                 style={[t`w-[24px] h-[24px]`]}
                 resizeMode="contain"

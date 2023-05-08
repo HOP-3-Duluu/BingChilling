@@ -1,19 +1,110 @@
-import {
-  Button,
-  FlatList,
-  Image,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Alert, Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {t} from '../../utils/style';
-import {useState} from 'react';
+import { useState} from 'react';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { useUserCont } from '../../contexts/userCont';
+import { AuthenticationDetails, CognitoUser} from 'amazon-cognito-identity-js';
+import { asyncStorage, cognitoClient, userPool } from '../../utils/aws';
 
 export const Signup = ({navigation}: any) => {
   const [tap, setTap] = useState<any>(0);
   const [check, setCheck] = useState<boolean>(false);
+  const [mail , setMail] = useState<string>('');
+  const [pw , setPw] = useState<string>('');
   const borderColor = tap ? 'border-blue-500' : 'border-gray-500';
+
+  GoogleSignin.configure({
+    webClientId: '',
+  });
+
+  const usr = useUserCont();
+  const attributeList = [
+    {
+      Name: "email",
+      Value: mail,
+    },
+    {
+      Name: 'name',
+      Value: 'Tester',
+    }
+  ];
+  const isValidEmail = (email: string) => {return /\S+@\S+\.\S+/.test(email)};
+
+  const handleSignUp = async () => {
+      try {
+         return await new Promise((res , rej) => {
+          if(mail != '' && pw != '') {
+            if(!isValidEmail(mail)) {
+               Alert.alert(`Invalid email: ${mail}`);
+               setMail('');
+               return;
+            }
+            const params = {
+              ClientId: '',
+              Username: `Test`,
+              Password: pw,
+              UserAttributes: attributeList
+            }
+            cognitoClient.signUp(params).then(async() => {
+              const confirmParams = {UserPoolId: '',Username: 'Test'};
+              await cognitoClient.adminConfirmSignUp(confirmParams).then(() => navigation.navigate('ProfileSetUp'));
+            });
+          }
+          else {
+            Alert.alert(`Form not filled up`);
+          };
+        });
+      } catch(e) {
+         console.log(e);
+      }
+  }
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await new Promise(async(res , rej) => {
+        const { idToken, user } = await GoogleSignin.signIn();
+        console.log(user);
+        const clientId = '';
+        const params = {
+          ClientId: clientId,
+          Username: user?.familyName,
+          Password: "TempPassword123!",
+          UserAttributes: [
+            { Name: "email", Value: user?.email },
+            { Name: "name", Value: user?.name}
+          ],
+        };
+
+        const cogUser = new CognitoUser({
+          Username: user?.familyName as string, 
+          Pool: userPool,
+        });
+        
+        const userData = {Username: user?.familyName, Password: "TempPassword123!"} , details = new AuthenticationDetails(userData as any); 
+        
+        cognitoClient.signUp(params as any, async(err: any, data: any) => {
+          if (err) {
+            console.log('Error signing up user:', err?.message);
+            if(err?.message == 'User already exists') {
+                cogUser.authenticateUser(details, {
+                  onSuccess: result => {res(result), asyncStorage?.setItem(`name` , user?.familyName as string) , usr?.setIsLogged(true)},
+                  onFailure: err => rej(`Rejected: ${err}`),
+              });
+            }
+            else { 
+              const confirmParams = {UserPoolId: '', Username: user?.familyName};
+              await cognitoClient.adminConfirmSignUp(confirmParams as any);
+              setTimeout(() => {navigation?.navigate('Login')}, 1000);
+            }
+          } else {
+            console.log('Successfully signed up user:', data);
+          }
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    };
+  };
 
   return (
     <View style={[t`w-full h-full bg-white flex justify-center items-center`]}>
@@ -31,6 +122,7 @@ export const Signup = ({navigation}: any) => {
               <Image style={[t`h-[20px] w-[20px] ml-[20px]`]} resizeMode="contain" source={{uri: "https://i.ibb.co/2Zy3MGd/Screen-Shot-2023-04-15-at-13-22-37.png"}}/>
           <TextInput
             style={[t`ml-[15px] h-[60px] w-[308px] ml-[12px]`]}
+            value={mail}
             onFocus={() => {
               setTap(1);
             }}
@@ -38,6 +130,7 @@ export const Signup = ({navigation}: any) => {
               setTap(0);
             }}
             placeholder="Email"
+            onChangeText={(txt) => setMail(txt)}
           />
           </View>
           <View style={[
@@ -50,6 +143,7 @@ export const Signup = ({navigation}: any) => {
               <Image style={[t`h-[20px] w-[20px] ml-[20px]`]} resizeMode="contain" source={{uri: "https://i.ibb.co/kHT8KqM/Screen-Shot-2023-04-15-at-13-28-14.png"}}/>
           <TextInput
             style={[t`ml-[15px] h-[60px] w-[308px] ml-[12px]`]}
+            value={pw}
             onFocus={() => {
               setTap(3);
             }}
@@ -57,6 +151,7 @@ export const Signup = ({navigation}: any) => {
               setTap(2);
             }}
             placeholder="Password"
+            onChangeText={(txt) => setPw(txt)}
           />
           </View>
           <View
@@ -86,7 +181,7 @@ export const Signup = ({navigation}: any) => {
           style={[
             t`bg-[#9C9FF0] mt-[20px] w-[360px] h-[58px] rounded-[10px] flex items-center justify-center`,
           ]}
-          onPress={() => {navigation.navigate('ProfileSetUp')}}>
+          onPress={handleSignUp}>
           <Text style={[t`text-white`]}>Sign up</Text>
         </TouchableOpacity>
         <View style={[t`mt-[42px] w-[360px] h-[65px] flex flex-col`]}>
@@ -115,7 +210,7 @@ export const Signup = ({navigation}: any) => {
             <TouchableOpacity
               style={[
                 t`w-[88px] h-[60px] border-[#EEEEEE] border-[1px] flex justify-center items-center rounded-[16px]`,
-              ]}>
+              ]} onPress={handleGoogleSignIn}>
               <Image
                 style={[t`w-[24px] h-[24px]`]}
                 resizeMode="contain"

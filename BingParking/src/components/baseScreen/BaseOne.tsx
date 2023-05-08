@@ -1,10 +1,17 @@
 import { Button, Image, Text, View } from "react-native"
 import { styles, t } from "../../utils/style"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { asyncStorage } from "../../utils/aws";
 
-const BaseOne = ({ navigation, route }: any) => {
+const BaseOne = ({ navigation}: any) => {
 
     const [clr , setClr] = useState<boolean>(false);
+    
+    useEffect(() => {
+        asyncStorage?.getItem('intro').then((data) => {
+            return data == 'onEnd' ? navigation?.navigate('Starter') : console.log(`New user.`);
+        })
+    }, []);
 
     return (
         <View style={t`flex flex-col w-full justify-center items-center mt-auto mb-[51px]`}>
@@ -18,15 +25,6 @@ const BaseOne = ({ navigation, route }: any) => {
                     title="Next"
                     onPress={() =>
                         navigation.navigate('TutorialTwo')
-                    }
-                />
-            </View>
-            <View style={t`flex w-full bg-${styles.colors.submain} p-2 w-[368px] h-[58px] gap-[10px] rounded-lg hover:bg-${styles.colors.submain}`}>
-                <Button
-                    color="#FFFFFF"
-                    title="Back"
-                    onPress={() =>
-                        navigation.navigate('Home')
                     }
                 />
             </View>
