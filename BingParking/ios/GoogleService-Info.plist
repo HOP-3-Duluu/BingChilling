@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>80597763129-pbluiddeu7s4nks24pe71ab1u7ej0rr9.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.80597763129-pbluiddeu7s4nks24pe71ab1u7ej0rr9</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDMW065346fGKwo7oujsS3tXHqCt5ifDKw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>80597763129</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactjs.native.example.BingParking</string>
+	<key>PROJECT_ID</key>
+	<string>bing-parking</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bing-parking.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:80597763129:ios:2c7c861fdbf253a6a7b9e8</string>
+</dict>
+</plist>

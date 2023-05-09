@@ -7,12 +7,28 @@ import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export const ProfSetUp = () => {
+export const ProfSetUp = ({navigation, route}: any) => {
+  const { email , pass } = route.params;
   const [tap, setTap] = useState<any>(0);
+  const [mail , setMail] = useState<string>(email);
+  const [name , setName] = useState<string>('');
   const [img, setImg] = useState<ImageOrVideo | any>(null);
   const [selected, setSelected] =useState<boolean>(false);
   const [value, setValue] = useState<string>('');
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState<string>('');
+
+  const attributeList = [{Name: "email",Value: mail},{Name: 'name',Value: name}];
+
+  // const params = {
+  //   ClientId: '',
+  //   Username: `Test`,
+  //   Password: pw,
+  //   UserAttributes: attributeList
+  // }
+  // cognitoClient.signUp(params).then(async() => {
+  //   const confirmParams = {UserPoolId: '',Username: 'Test'};
+  //   await cognitoClient.adminConfirmSignUp(confirmParams);
+  // });
 
 
   const handleTextChange = (text: string) => {
@@ -126,6 +142,9 @@ export const ProfSetUp = () => {
             setTap(6);
           }}
           placeholder="Email"
+          autoCapitalize='none'
+          value={email}
+          onChangeText={(txt) => setMail(txt)}
         />
         <Image
           style={[t`h-[20px] w-[20px]`]}

@@ -9,7 +9,6 @@ import { useUserCont } from '../../contexts/userCont';
 export const Login = ({navigation}: any) => {
   const [tap, setTap] = useState<any>(0);
   const [check, setCheck] = useState<boolean>(false);
-  // const borderColor = tap ? 'border-blue-500' : 'border-gray-500';
   const usr = useUserCont();
   GoogleSignin.configure({
     webClientId: '',

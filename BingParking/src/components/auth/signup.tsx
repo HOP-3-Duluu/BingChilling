@@ -11,23 +11,12 @@ export const Signup = ({navigation}: any) => {
   const [check, setCheck] = useState<boolean>(false);
   const [mail , setMail] = useState<string>('');
   const [pw , setPw] = useState<string>('');
-  const borderColor = tap ? 'border-blue-500' : 'border-gray-500';
 
   GoogleSignin.configure({
     webClientId: '',
   });
 
   const usr = useUserCont();
-  const attributeList = [
-    {
-      Name: "email",
-      Value: mail,
-    },
-    {
-      Name: 'name',
-      Value: 'Tester',
-    }
-  ];
   const isValidEmail = (email: string) => {return /\S+@\S+\.\S+/.test(email)};
 
   const handleSignUp = async () => {
@@ -39,16 +28,7 @@ export const Signup = ({navigation}: any) => {
                setMail('');
                return;
             }
-            const params = {
-              ClientId: '',
-              Username: `Test`,
-              Password: pw,
-              UserAttributes: attributeList
-            }
-            cognitoClient.signUp(params).then(async() => {
-              const confirmParams = {UserPoolId: '',Username: 'Test'};
-              await cognitoClient.adminConfirmSignUp(confirmParams).then(() => navigation.navigate('ProfileSetUp'));
-            });
+            navigation?.navigate('ProfileSetUp' , {email: mail , pass: pw});
           }
           else {
             Alert.alert(`Form not filled up`);
@@ -131,6 +111,7 @@ export const Signup = ({navigation}: any) => {
             }}
             placeholder="Email"
             onChangeText={(txt) => setMail(txt)}
+            autoCapitalize={'none'}
           />
           </View>
           <View style={[
@@ -152,6 +133,7 @@ export const Signup = ({navigation}: any) => {
             }}
             placeholder="Password"
             onChangeText={(txt) => setPw(txt)}
+            autoCapitalize={'none'}
           />
           </View>
           <View
