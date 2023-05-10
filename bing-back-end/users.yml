@@ -2,5 +2,12 @@
     handler: src/users/createUser.createUsr
     events:
       - http:
-          path: /user
+          path: /user/create
           method: post
+  getUser:
+    handler: src/users/getUser.getUser
+    events:
+      - http:
+          path: /user/get/{id}
+          method: get
+          cors: true

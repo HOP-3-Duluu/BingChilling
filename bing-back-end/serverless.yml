@@ -32,7 +32,8 @@ provider:
 functions:
    - ${file(./users.yml)} 
    - ${file(./main.yml)}
-
+   
+resources:
   Resources:
     MyBucket:
       Type: AWS::S3::Bucket

@@ -330,7 +330,7 @@ PODS:
   - React-jsinspector (0.70.6)
   - React-logger (0.70.6):
     - glog
-  - react-native-blur (4.3.1):
+  - react-native-blur (4.3.2):
     - React-Core
   - react-native-geolocation-service (5.3.1):
     - React
