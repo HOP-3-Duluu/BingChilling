@@ -1,99 +1,39 @@
-import {
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import ImagePicker, { ImageOrVideo } from "react-native-image-crop-picker";
+import {Image, Keyboard, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {t} from '../../utils/style';
-import {useEffect, useState} from 'react';
-import {SelectList} from 'react-native-dropdown-select-list';
-import React from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { useState } from 'react';
+import { SelectList } from 'react-native-dropdown-select-list';
 
-export const ProfSetUp = ({navigation, route}: any) => {
-  const { email , pass } = route.params;
-  const [tap, setTap] = useState<any>(0);
-  const [mail , setMail] = useState<string>(email);
-  const [name , setName] = useState<string>('');
-  const [img, setImg] = useState<ImageOrVideo | any>(null);
-  const [selected, setSelected] =useState<boolean>(false);
-  const [value, setValue] = useState<string>('');
-  const [inputValue, setInputValue] = useState<string>('');
+export const EditProfile = ({navigation}:any) => {
+    const [tap, setTap] = useState<any>(0);
+    const [selected, setSelected] =useState<boolean>(false);
+    const [value, setValue] = useState<string>('');
 
-  const attributeList = [{Name: "email",Value: mail},{Name: 'name',Value: name}];
-
-  // const params = {
-  //   ClientId: '',
-  //   Username: `Test`,
-  //   Password: pw,
-  //   UserAttributes: attributeList
-  // }
-  // cognitoClient.signUp(params).then(async() => {
-  //   const confirmParams = {UserPoolId: '',Username: 'Test'};
-  //   await cognitoClient.adminConfirmSignUp(confirmParams);
-  // });
-
-
-  const handleTextChange = (text: string) => {
-    const formattedText = text.replace(/[^0-9]/g, '');
-    setValue(formattedText);
-    setInputValue(text);
-    if (text.length === 8) {
-      Keyboard.dismiss();
-    }
-  };
-
-  const data = [
-    {key: '1', value: 'Male'},
-    {key: '2', value: 'Female'},
-  ];
-
-  const role = [
-    {key: '1', value: 'User'},
-    {key: '2', value: 'Owner'},
-  ]
-
-  const selectImages = () => {
-    ImagePicker.openPicker({
-      mediaType: 'photo',
-      includeBase64: true,
-      multiple: false,
-      maxFiles: 1,
-    }).then((selectedImages) => {
-        setImg(selectedImages);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-
+    const handleTextChange = (text: string) => {
+        const formattedText = text.replace(/[^0-9]/g, '');
+        setValue(formattedText);
+        if (text.length === 8) {
+          Keyboard.dismiss();
+        }
+      };
+    
+      const data = [
+        {key: '1', value: 'Male'},
+        {key: '2', value: 'Female'},
+      ];
+    
+      const role = [
+        {key: '1', value: 'User'},
+        {key: '2', value: 'Owner'},
+      ]
+    
   return (
-      <View style={[t`w-full h-full bg-white` ]}>
-      <KeyboardAvoidingView
+    <View style={[t`w-full h-full bg-white`]}>
+        <KeyboardAvoidingView
        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
        style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={[t`flex items-center`]}>
       <View style={[t`flex flex-row`]}>
-      <Image
-          style={[t`h-[140px] w-[140px] rounded-[100px] flex items-center`]}
-          source={img == null ? require('../../assets/user.jpg') : {uri: img?.path}}
-        />
-        <TouchableOpacity onPress={() => selectImages()} style={[t`ml-[105px] absolute mt-[110px]`]}>
-        <Image
-        style={[t`h-[30px] w-[30px] rounded-[10px]`]}
-        source={{
-          uri: 'https://i.ibb.co/SNzyCcb/Group.png',
-        }}
-      />
-      </TouchableOpacity>
       </View>
       <View
         style={[
@@ -111,7 +51,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
           onBlur={() => {
             setTap(0);
           }}
-          placeholder="Full Name"
+          placeholder="Full Name here"
         />
       </View>
       <View
@@ -130,7 +70,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
           onBlur={() => {
             setTap(2);
           }}
-          placeholder="Nickname"
+          placeholder="Nickname here"
         />
       </View>
     
@@ -150,10 +90,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
           onBlur={() => {
             setTap(6);
           }}
-          placeholder="Email"
-          autoCapitalize='none'
-          value={email}
-          onChangeText={(txt) => setMail(txt)}
+          placeholder="Email here"
         />
         <Image
           style={[t`h-[20px] w-[20px]`]}
@@ -183,9 +120,8 @@ export const ProfSetUp = ({navigation, route}: any) => {
           onBlur={() => {
             setTap(8);
           }}
-          
           value={value}
-          placeholder="Phone number"
+          placeholder="Phone number here"
           onChangeText={handleTextChange}
         />
       </View>
@@ -194,7 +130,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
             boxStyles={t`w-[360px] mt-[20px] h-[60px] rounded-[10px] border-[#EEEEEE] bg-[#F8F7FD] border-[1px] flex flex-row items-center`}
             dropdownStyles={t`w-[360px] rounded-[10px] border-[#EEEEEE] bg-[#F8F7FD] border-[1px] flex flex-row items-center`}
             data={data}
-            placeholder="Gender"
+            placeholder="Gender here"
             search={false}
           />
          <SelectList
@@ -202,25 +138,32 @@ export const ProfSetUp = ({navigation, route}: any) => {
             boxStyles={t`w-[360px] mt-[20px] h-[60px] rounded-[10px] border-[#EEEEEE] bg-[#F8F7FD] border-[1px] flex flex-row items-center`}
             dropdownStyles={t`w-[360px] rounded-[10px] border-[#EEEEEE] bg-[#F8F7FD] border-[1px] flex flex-row items-center`}
             data={role}
-            placeholder="Role"
+            placeholder="Role here"
             
             search={false}
           />
          
-      <View style={[t` justify-end items-center`]}>
+      
+        </View>
+      </ScrollView>
+      </KeyboardAvoidingView>
+      <View style={[t`justify-end items-center`]}>
       <TouchableOpacity
           style={[
             t`bg-[#9C9FF0] mt-[20px] w-[360px] mb-[30px] h-[58px] rounded-[10px] flex items-center justify-center`,
           ]}
-          onPress={() => ''}>
-          <Text style={[t`text-white`]}>Continue</Text>
+          onPress={() => {
+            navigation.navigate('Home')
+          }}>
+          <Text style={[t`text-white`]}>Update</Text>
         </TouchableOpacity>
         </View>
-        </View>
-      </ScrollView>
-      </KeyboardAvoidingView>
     </View>
   );
 };
 
-export default ProfSetUp;
+export default EditProfile;
+function setInputValue(text: string) {
+    throw new Error('Function not implemented.');
+}
+

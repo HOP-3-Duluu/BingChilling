@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { HomeScreen } from '../../screens/Home';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Profile } from '../../components/prof';
 const Tab = createBottomTabNavigator();
 
 export const TabScreen = () => {
@@ -24,7 +25,8 @@ export const TabScreen = () => {
                 tabBarActiveTintColor: '#4448AE',
                 tabBarIcon: ({color}) => (<Icon name="person-outline" color={color} size={25} ></Icon>),
                 headerShown: false
-                }} name="Profile" component={HomeScreen}/>
+                }} name="Profile" component={Profile}/>
+                
         </Tab.Navigator>
     );
 };

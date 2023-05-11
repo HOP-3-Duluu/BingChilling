@@ -24,7 +24,7 @@ export const UserContextProv = ({children}: any) => {
         if(user != null) {
            setIsLogged(true);
         }
-        setIsLogged(false);
+        setIsLogged(true);
     }, [user]); 
 
     return (
