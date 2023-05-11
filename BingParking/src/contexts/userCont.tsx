@@ -8,27 +8,29 @@ type Context = {
     setUser: React.Dispatch<React.SetStateAction<string>>;
     isLogged: boolean;
     setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
+    currentLocation: any;
+    setCurrentLocation: React.Dispatch<any>;
 };
 
 export const UserContext = createContext<Context | null>({} as Context);
 
-export const UserContextProv = ({children}: any) => {
-
+export const UserContextProv = ({ children }: any) => {
+    const [currentLocation, setCurrentLocation] = useState<any | null>(null);
     const [user, setUser] = useState<any | null>(null);
-    const [isLogged , setIsLogged] = useState<boolean>(false);
+    const [isLogged, setIsLogged] = useState<boolean>(false);
     // const apiBaseUrl = process.env.TESTING;
     // console.log(apiBaseUrl);
-    
+
     useEffect(() => {
         asyncStorage?.getItem('name').then((data) => setUser(data));
-        if(user != null) {
-           setIsLogged(true);
+        if (user != null) {
+            setIsLogged(true);
         }
         setIsLogged(true);
     }, [user]); 
 
     return (
-        <UserContext.Provider value={{ user, setUser, isLogged , setIsLogged}}>
+        <UserContext.Provider value={{ user, setUser, isLogged, setIsLogged, currentLocation, setCurrentLocation }}>
             {children}
         </UserContext.Provider>
     )

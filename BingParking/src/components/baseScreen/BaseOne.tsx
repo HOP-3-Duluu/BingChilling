@@ -2,15 +2,20 @@ import { Button, Image, Text, View } from "react-native"
 import { styles, t } from "../../utils/style"
 import { useEffect, useState } from "react";
 import { asyncStorage } from "../../utils/aws";
+import { useUserCont } from "../../contexts/userCont";
 
 const BaseOne = ({ navigation}: any) => {
 
     const [clr , setClr] = useState<boolean>(false);
-    
+    const user = useUserCont(); 
+
     useEffect(() => {
-        asyncStorage?.getItem('intro').then((data) => {
-            // return data == 'onEnd' ? navigation?.navigate('Starter') : console.log(`New user.`);
-        })
+            if(user?.isLogged != true) {return;}
+            else {
+                asyncStorage?.getItem('intro').then((data) => {
+                    return data == 'onEnd' && user?.isLogged == false ? navigation?.navigate('Starter') : console.log(`New user.`);
+                })
+            }
     }, []);
 
     return (

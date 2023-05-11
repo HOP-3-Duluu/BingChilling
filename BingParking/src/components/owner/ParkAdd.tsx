@@ -1,20 +1,7 @@
-import {
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image , KeyboardAvoidingView , Platform , StyleSheet , Text , TextInput, TouchableOpacity, View} from 'react-native';
 import {t} from '../../utils/style';
 import {useEffect, useRef, useState} from 'react';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
-import Geolocation from 'react-native-geolocation-service';
-import MapViewDirections from 'react-native-maps-directions';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import MapView, {Marker} from 'react-native-maps';
 import Modal from 'react-native-modal';
@@ -43,7 +30,6 @@ export const ParkAdd = () => {
       setCount(count + 1);
     }
   };
-
 
   const handleMapPress = (e: any) => {
     setSelectedLocation(e?.nativeEvent?.coordinate);
@@ -78,6 +64,7 @@ export const ParkAdd = () => {
         console.log(error);
       });
   };
+  
   return (
     <View style={[t`w-full h-full bg-white items-center`]}>
       <KeyboardAvoidingView
