@@ -9,3 +9,4 @@ export const headers = {'Access-Control-Allow-Origin': '*'};
 export const dynamoClient = new DynamoDB({region: region}); 
 export const s3Client = new S3({region: region}); 
 export const sqsClient = new SQS({region: region}); 
+export const uid = uuidv4();

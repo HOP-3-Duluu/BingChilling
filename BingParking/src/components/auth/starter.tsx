@@ -63,7 +63,7 @@ export const Starter = ({navigation}: any) => {
   };
   return (
     <View style={[t`w-full h-full flex bg-white items-center`]}>
-      <Text style={[t`text-[48px] font-bold mt-[98px]`]}>Lets you in</Text>
+      <Text style={[t`text-[48px] font-bold mt-[98px] mt-[214px]`]}>Lets you in</Text>
       <View style={[t`mt-[78px]`]}>
       <TouchableOpacity style={[
               t` border-[1px] border-[#EEEEEE] rounded-[10px] w-[360px] h-[60px] flex justify-center flex-row items-center `,

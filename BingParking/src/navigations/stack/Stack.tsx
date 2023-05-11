@@ -9,6 +9,8 @@ import { Forgotpass } from '../../components/forgotpass';
 import Verify from '../../components/forgotpass/verify';
 import Createnewpass from '../../components/forgotpass/cnp';
 import { useUserCont } from '../../contexts/userCont';
+import { EditProfile, Help } from '../../components/prof';
+import { ParkAdd } from '../../components/owner';
 
 export const StackScreen = () => {
 
@@ -19,24 +21,27 @@ export const StackScreen = () => {
      return (
         <Stack.Navigator initialRouteName='Home'>
           <Stack.Screen name="Home" component={TabScreen} options={{headerShown: false}}/>
-          <Stack.Screen name="Forgot" component={Forgotpass} options={{header: (e:any ) => <Header title="Forgot Password" navigation={e.navigation} />}} />
-          <Stack.Screen name="Verify" component={Verify} options={{header: (e:any ) => <Header title="Forgot Password" navigation={e.navigation} />}} />
-          <Stack.Screen name="Create" component={Createnewpass} options={{header: (e:any ) => <Header title="Create new Password" navigation={e.navigation} />}} />
           <Stack.Screen name='Notif' component={Notification} options={{header: (e: any) => <Header navigation={e.navigation} bg="#F8F7FD" title="Notification"/>}}/>
+          <Stack.Screen name="EditProfile" component={EditProfile} options={{header: (e:any ) => <Header navigation={e.navigation} />}}/>
+          <Stack.Screen name="Help" component={Help} options={{header: (e:any ) => <Header bg="#000000" navigation={e.navigation} />}}/>
+          <Stack.Screen name="ParkAdd" component={ParkAdd} options={{header: (e:any ) => <Header title="Add" navigation={e.navigation} />}}/>
         </Stack.Navigator>
      );
   }
   else {
     return (
       <Stack.Navigator initialRouteName='TutorialOne'>
-        <Stack.Screen name="TutorialOne" component={BaseOne} options={{ headerShown: false }}/>
-        <Stack.Screen name="TutorialTwo" component={BaseTwo} options={{ headerShown: false }}/>
-        <Stack.Screen name="TutorialThree" component={BaseThree} options={{ headerShown: false }}/>
-        <Stack.Screen name="TutorialFour" component={BaseFour} options={{ headerShown: false }}/>
-        <Stack.Screen name="Starter" component={Starter} options={{header: (e:any ) => <Header navigation={e.navigation} />}}/>
-        <Stack.Screen name="Login" component={Login} options={{header: (e:any ) => <Header navigation={e.navigation} />}}/>
-        <Stack.Screen name="Signup" component={Signup} options={{header: (e:any ) => <Header navigation={e.navigation} />}}/>
-        <Stack.Screen name="ProfileSetUp" component={ProfSetUp} options={{header: (e:any ) => <Header title="Fill Your Profile" navigation={e.navigation} />}}/>
+          <Stack.Screen name="TutorialOne" component={BaseOne} options={{ headerShown: false }}/>
+          <Stack.Screen name="TutorialTwo" component={BaseTwo} options={{ headerShown: false }}/>
+          <Stack.Screen name="TutorialThree" component={BaseThree} options={{ headerShown: false }}/>
+          <Stack.Screen name="TutorialFour" component={BaseFour} options={{ headerShown: false }}/>
+          <Stack.Screen name="Starter" component={Starter} options={{headerShown:false}}/>
+          <Stack.Screen name="Login" component={Login} options={{header: (e:any ) => <Header navigation={e.navigation} />}}/>
+          <Stack.Screen name="Signup" component={Signup} options={{header: (e:any ) => <Header navigation={e.navigation} />}}/>
+          <Stack.Screen name="Forgot" component={Forgotpass} options={{header: (e:any ) => <Header title="Forgot Password" navigation={e.navigation} />}} />
+          <Stack.Screen name="Verify" component={Verify} options={{header: (e:any ) => <Header title="Forgot Password" navigation={e.navigation} />}} />
+          <Stack.Screen name="Create" component={Createnewpass} options={{header: (e:any ) => <Header title="Create new Password" navigation={e.navigation} />}} />
+          <Stack.Screen name="ProfileSetUp" component={ProfSetUp} options={{header: (e:any ) => <Header title="Fill Your Profile" navigation={e.navigation} />}}/>
         </Stack.Navigator>
     );
   }
