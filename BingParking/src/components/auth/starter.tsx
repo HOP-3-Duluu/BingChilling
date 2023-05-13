@@ -71,9 +71,7 @@ export const Starter = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px] mr-[12px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/1200px-Facebook_f_logo_%282021%29.svg.png',
-                }}
+                source={require('../../assets/Facebook.jpg')}
               />
           <Text>
             Continue with Facebook
@@ -85,9 +83,7 @@ export const Starter = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px] mr-[12px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png',
-                }}
+                source={require('../../assets/Google.jpg')}
               />
           <Text>
             Continue with Google
@@ -99,9 +95,7 @@ export const Starter = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px] mr-[12px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdQO_TyUapVDKPk9N3tV2tYI_0rWwM2fiSOQ&usqp=CAU',
-                }}
+                source={require('../../assets/Apple.jpg')}
               />
           <Text>
             Continue with Apple

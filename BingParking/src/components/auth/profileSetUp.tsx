@@ -89,9 +89,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
         <TouchableOpacity onPress={() => selectImages()} style={[t`ml-[105px] absolute mt-[110px]`]}>
         <Image
         style={[t`h-[30px] w-[30px] rounded-[10px]`]}
-        source={{
-          uri: 'https://i.ibb.co/SNzyCcb/Group.png',
-        }}
+        source={require('../../assets/Exclude.jpg')}
       />
       </TouchableOpacity>
       </View>

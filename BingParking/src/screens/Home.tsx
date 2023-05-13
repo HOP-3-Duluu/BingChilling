@@ -96,7 +96,7 @@ export const HomeScreen = ({ navigation }: any) => {
              }}
              styles={styles.autocompleteContainer}
              query={{
-              key: 'AIzaSyAF76A1JtzoJ2hkIMZQCFegkvo9GSXlYKk',
+              key: '',
               language: 'en',
              }}/> 
             {selectedLocation && (
@@ -107,7 +107,7 @@ export const HomeScreen = ({ navigation }: any) => {
           <MapViewDirections
            origin={org}
            destination={des}
-           apikey={'AIzaSyAF76A1JtzoJ2hkIMZQCFegkvo9GSXlYKk'}
+           apikey={''}
            strokeColor='red'
            strokeWidth={2}
            mode='DRIVING'
