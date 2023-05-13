@@ -18,7 +18,6 @@ export const UserContextProv = ({children}: any) => {
     const [isLogged , setIsLogged] = useState<boolean>(false);
     // const apiBaseUrl = process.env.TESTING;
     // console.log(apiBaseUrl);
-    // refix
     
     useEffect(() => {
         asyncStorage?.getItem('name').then((data) => setUser(data));
