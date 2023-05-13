@@ -1,10 +1,9 @@
-import { Button, FlatList, Image, Text, View, } from "react-native"
+import { Button, FlatList, Image, Text, TouchableOpacity, View, } from "react-native"
 import { styles, t } from "../../utils/style"
 import { useState, useEffect } from "react";
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useIsFocused } from '@react-navigation/native';
-
-
+import LinearGradient from 'react-native-linear-gradient'
 const BaseThree = ({ navigation, route }: any) => {
     const isFocused = useIsFocused();
     const width = useSharedValue(0);
@@ -35,28 +34,30 @@ const BaseThree = ({ navigation, route }: any) => {
                 <Animated.View style={[t`flex border-2 mr-5px rounded-full border-[#616161] w-1 border-${styles.colors.main}`, animatedStyles]}></Animated.View >
                 <Animated.View style={[t`flex border-2 mr-5px rounded-full border-[#616161] w-1`,]}></Animated.View >
             </View>
-            <View style={t`flex w-full bg-${styles.colors.submain} p-2 w-[368px] h-[58px] mb-[17px] mt-[17px] rounded-lg text-white text-white`}>
-                <Button
-                    color="#FFFFFF"
-                    title="Next"
-                    onPress={() => {
-                        (width.value = withSpring(0))
-                        navigation.navigate('TutorialFour')
-                    }
-                    }
-                />
-            </View >
-            <View style={t`flex w-full bg-${styles.colors.submain} p-2 w-[368px] h-[58px] gap-[10px] rounded-lg`}>
-                <Button
-                    color="#FFFFFF"
-                    title="Back"
-                    onPress={() => {
-                        (width.value = withSpring(0))
-                        navigation.navigate('TutorialTwo')
-                    }
-                    }
-                />
-            </View>
+            <TouchableOpacity
+                onPress={() => {
+                    (width.value = withSpring(0))
+                    navigation.navigate('TutorialFour')
+                }
+                }>
+                <LinearGradient
+                    colors={['#CEC9F2', '#9C9FF0']}
+                    style={[t`flex w-full  p-2 w-[368px] h-[58px] gap-[10px] rounded-lg mb-[12px] `, { alignItems: 'center', justifyContent: 'center', }]}
+                ><Text style={[t`text-white text-[18px]`]}>Next</Text>
+                </LinearGradient>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => {
+                    (width.value = withSpring(0))
+                    navigation.navigate('TutorialTwo')
+                }
+                }>
+                <LinearGradient
+                    colors={['#CEC9F2', '#9C9FF0']}
+                    style={[t`flex w-full  p-2 w-[368px] h-[58px] gap-[10px] rounded-lg `, { alignItems: 'center', justifyContent: 'center', }]}
+                ><Text style={[t`text-white text-[18px]`]}>Back</Text>
+                </LinearGradient>
+            </TouchableOpacity>
         </View >
     )
 };

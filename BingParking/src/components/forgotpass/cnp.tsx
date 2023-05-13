@@ -12,6 +12,7 @@ const Createnewpass = ({ navigation }: any) => {
     const [checked, setChecked] = useState<boolean>(false);
     const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
+
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -67,7 +68,7 @@ const Createnewpass = ({ navigation }: any) => {
                             <Text style={t`text-[#4448AE] text-[24px] leading-[22.4px] font-bold`}>Congratulations!</Text>
                         </View>
                         <Text style={t`text-[#212121] text-[16px]`}>Your account is ready to use</Text>
-                        <TouchableOpacity onPress={toggleModal} style={t`pb-[15px]`}>
+                        <TouchableOpacity onPress={()=> navigation.navigate('Login')} style={t`pb-[15px]`}>
                             <LinearGradient
                                 colors={['#CEC9F2', '#9C9FF0']}
                                 style={{
