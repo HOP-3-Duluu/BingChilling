@@ -16,7 +16,7 @@ const Createnewpass = ({ navigation }: any) => {
         setModalVisible(!isModalVisible);
     };
     return (
-        <View style={[t`flex flex-col  w-full h-full bg-white justify-center items-center `]}>
+        <View style={[t`flex flex-col  w-full h-full bg-white justify-center items-center`]}>
             <Image style={{ width: 236, height: 236 }} source={require('../../assets/verify.jpg')} />
             <View style={t`flex flex-col w-full p-4`}>
                 <Text style={t`flex text-sm text-[#212121] mb-5`}>Create Your New Password</Text>
@@ -31,7 +31,7 @@ const Createnewpass = ({ navigation }: any) => {
                     <Ion onPress={() => setCh(!ch)} name={`${ch ? 'eye' : 'eye-off'}`} size={20} style={t`ml-4`} />
                 </View>
             </View>
-            <View style={t`flex flex-row justify-center items-center `}>
+            <View style={t`flex flex-row justify-center items-center`}>
                 <TouchableOpacity
                     style={[t`mr-[10px]`]}
                     onPress={() => {
@@ -58,11 +58,11 @@ const Createnewpass = ({ navigation }: any) => {
                         width: 360, height: 58, borderRadius: 10, alignItems: 'center',
                         justifyContent: 'center',
                     }}>
-                    <Text style={t`text-white text-[16px] leading-[22.4px] `}>Continue</Text>
+                    <Text style={t`text-white text-[16px] leading-[22.4px]`}>Continue</Text>
                 </LinearGradient>
                 <Modal isVisible={isModalVisible} animationIn={"fadeInUp"} animationOut={"fadeOut"}>
-                    <View style={[t`bg-[#FFFFFF] flex justify-center items-center  rounded-[24px] h-[441px] w-[340px] `, { justifyContent:"space-around"}]}>
-                        <View style={t`flex justify-center items-center `}>
+                    <View style={[t`bg-[#FFFFFF] flex justify-center items-center  rounded-[24px] h-[441px] w-[340px]`, { justifyContent:"space-around"}]}>
+                        <View style={t`flex justify-center items-center`}>
                             <Image style={{ width: 236, height: 236 }} source={require('../../assets/verify.jpg')} />
                             <Text style={t`text-[#4448AE] text-[24px] leading-[22.4px] font-bold`}>Congratulations!</Text>
                         </View>
@@ -75,7 +75,7 @@ const Createnewpass = ({ navigation }: any) => {
                                     justifyContent: 'center',
                                 }}
                             >
-                                <Text style={t`text-white text-[16px] leading-[22.4px] `}>Go to Homepage</Text>
+                                <Text style={t`text-white text-[16px] leading-[22.4px]`}>Go to Homepage</Text>
                             </LinearGradient>
 
                         </TouchableOpacity>

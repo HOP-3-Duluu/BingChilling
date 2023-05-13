@@ -7,6 +7,7 @@ import { useLocationCont } from "../../contexts/locationCont";
 
 export const Banner = ({name , dis , dur}: any) => { 
     const location = useLocationCont();
+    //hm
 
     return (
         <Animated.View style={t`flex flex-row justify-start items-center w-80 h-16 bg-[#CEC9F2] rounded-lg`} entering={FadeInUp} exiting={FadeOutUp}>

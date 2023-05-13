@@ -37,22 +37,47 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createUsr = void 0;
+var utils_1 = require("../utils");
+var client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
+// env;
 // console.log(date.includes('Today') ? date : moment(new Date(date)).format('LL')); 
 // const date = moment(new Date('2023-4-19')).calendar(); 
-// env;
 var createUsr = function (e) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, fname, name, mail, phone, pic, gender, role;
+    var _a, fname, name, mail, phone, pic, gender, role, params, command, response, err_1;
     return __generator(this, function (_b) {
-        _a = JSON.parse(e === null || e === void 0 ? void 0 : e.body), fname = _a.fname, name = _a.name, mail = _a.mail, phone = _a.phone, pic = _a.pic, gender = _a.gender, role = _a.role;
-        try {
+        switch (_b.label) {
+            case 0:
+                _a = JSON.parse(e === null || e === void 0 ? void 0 : e.body), fname = _a.fname, name = _a.name, mail = _a.mail, phone = _a.phone, pic = _a.pic, gender = _a.gender, role = _a.role;
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                params = {
+                    TableName: 'users',
+                    Item: {
+                        fullname: fname,
+                        name: name,
+                        email: mail,
+                        phone: phone,
+                        photo: pic,
+                        gender: gender,
+                        role: role
+                    }
+                };
+                command = new client_dynamodb_1.PutItemCommand(params);
+                return [4 /*yield*/, utils_1.s3Client.send(command)];
+            case 2:
+                response = _b.sent();
+                console.log(response);
+                return [3 /*break*/, 4];
+            case 3:
+                err_1 = _b.sent();
+                console.log(err_1);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/, {
+                    statusCode: 200,
+                    body: 'Transfer'
+                }];
         }
-        catch (err) {
-            console.log(err);
-        }
-        return [2 /*return*/, {
-                statusCode: 200,
-                body: 'Transfer'
-            }];
     });
 }); };
 exports.createUsr = createUsr;

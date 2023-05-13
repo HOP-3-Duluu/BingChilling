@@ -9,7 +9,7 @@ const BaseOne = ({ navigation}: any) => {
     
     useEffect(() => {
         asyncStorage?.getItem('intro').then((data) => {
-            return data == 'onEnd' ? navigation?.navigate('Starter') : console.log(`New user.`);
+            // return data == 'onEnd' ? navigation?.navigate('Starter') : console.log(`New user.`);
         })
     }, []);
 

@@ -1,10 +1,13 @@
-import { Button, Platform, StyleSheet, View } from "react-native"
+import { Button, Platform, StyleSheet, Touchable, View } from "react-native"
 import Geolocation from 'react-native-geolocation-service';
 import notifee from '@notifee/react-native';
 import MapViewDirections from 'react-native-maps-directions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useEffect, useRef, useState } from "react";
 import MapView, { Marker } from "react-native-maps";
+import { t } from "../utils/style";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export const HomeScreen = ({ navigation }: any) => {
       const [currentLocation, setCurrentLocation] = useState<any | null>(null);
@@ -17,10 +20,12 @@ export const HomeScreen = ({ navigation }: any) => {
       const [lon, setLon] = useState<any | number>(0);
       const [selectedLocation, setSelectedLocation] = useState<any | null>(null);
     
+      let role = 'owner';
       const handleMapPress = (event: any) => {
         setSelectedLocation(event.nativeEvent.coordinate);
         console.log(`Selected: ${JSON.stringify(selectedLocation)}`); 
       };
+      
     
       const requestLocationPermission = async () => {
         if (Platform.OS === 'ios') {
@@ -67,7 +72,7 @@ export const HomeScreen = ({ navigation }: any) => {
       }, [org, des, rc]);
     
       return (
-        <View style={styles.container}>
+        <View style={[t`w-full h-full`,styles.container]}>
           <Button title="Display Notification" onPress={() => {setRc(true)}}/>
           <MapView
             style={styles.map}
@@ -91,7 +96,7 @@ export const HomeScreen = ({ navigation }: any) => {
              }}
              styles={styles.autocompleteContainer}
              query={{
-              key: '',
+              key: 'AIzaSyAF76A1JtzoJ2hkIMZQCFegkvo9GSXlYKk',
               language: 'en',
              }}/> 
             {selectedLocation && (
@@ -102,7 +107,7 @@ export const HomeScreen = ({ navigation }: any) => {
           <MapViewDirections
            origin={org}
            destination={des}
-           apikey={''}
+           apikey={'AIzaSyAF76A1JtzoJ2hkIMZQCFegkvo9GSXlYKk'}
            strokeColor='red'
            strokeWidth={2}
            mode='DRIVING'
@@ -115,6 +120,15 @@ export const HomeScreen = ({ navigation }: any) => {
            }}/> 
            <Marker coordinate={currentLocation}/>
           </MapView>
+          <View style={[t`w-full h-full flex absolute bottom-5 right-5 justify-end items-end`]} pointerEvents="box-none">
+            <View style={[t`flex-row justify-between w-[120px]`]}>
+              <TouchableOpacity onPress={() => navigation.navigate('ParkAdd')} style={[t`border-[1px] rounded-10 border-[#4448AE] bg-[#4448AE] w-[50px] h-[50px] flex justify-center items-center`]}>
+                <Icon name='md-add-sharp' color='white' size={25}/>
+              </TouchableOpacity>
+              <TouchableOpacity style={[t`border-[1px] rounded-10 border-[#4448AE] bg-[#4448AE] w-[50px] h-[50px] flex justify-center items-center`]}>
+                <Icon name='locate' color='white' size={25}/></TouchableOpacity>
+            </View>
+          </View>
         </View>
       );
     };

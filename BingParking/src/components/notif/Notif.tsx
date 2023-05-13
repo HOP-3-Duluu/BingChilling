@@ -15,6 +15,7 @@ export const Notification = ({navigation}: any) => {
 
     const uniqueDates = [...new Set(data.map((item: any) => item.date))];
     //back-end , notification -> type: 'Payment' -> navigate to payment section
+    //hm?
     const NotifBanner = ({src , title , desc, date}: any) => {
         return (
             <View style={t`flex flex-row justify-start items-center w-86 h-28 bg-white rounded-lg`}>
