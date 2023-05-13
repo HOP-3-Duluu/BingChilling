@@ -136,27 +136,6 @@ export const Signup = ({navigation}: any) => {
             autoCapitalize={'none'}
           />
           </View>
-          <View
-            style={[t`flex flex-row items-center mt-[26px] justify-center`]}>
-            <TouchableOpacity
-              style={[t`mr-[10px]`]}
-              onPress={() => {
-                check ? setCheck(false) : setCheck(true);
-              }}>
-              <Image
-                style={[t`w-[24px] h-[24px]`]}
-                source={
-                  check
-                    ? {
-                        uri: 'https://i.ibb.co/TKzrT42/Screen-Shot-2023-04-15-at-11-45-16.png',
-                      }
-                    : {
-                        uri: 'https://i.ibb.co/3R63W5q/Screen-Shot-2023-04-15-at-11-48-37.png',
-                      }
-                }></Image>
-            </TouchableOpacity>
-            <Text>Remember me</Text>
-          </View>
         </View>
         <View style={[t`flex justify-center w-full`]}></View>
         <TouchableOpacity
@@ -175,7 +154,7 @@ export const Signup = ({navigation}: any) => {
           </View>
           <View
             style={[
-              t`w-[360px] h-[60px] mt-[20px] flex flex-row justify-around items-center`,
+              t`w-[360px] h-[60px] mt-[46px] flex flex-row justify-around items-center`,
             ]}>
             <TouchableOpacity
               style={[
@@ -184,9 +163,7 @@ export const Signup = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/1200px-Facebook_f_logo_%282021%29.svg.png',
-                }}
+                source={require('../../assets/Facebook.jpg')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -196,9 +173,7 @@ export const Signup = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png',
-                }}
+                source={require('../../assets/Google.jpg')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -208,14 +183,12 @@ export const Signup = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdQO_TyUapVDKPk9N3tV2tYI_0rWwM2fiSOQ&usqp=CAU',
-                }}
+                source={require('../../assets/Apple.jpg')}
               />
             </TouchableOpacity>
           </View>
         </View>
-        <View style={[t`flex flex-row mt-[82px] justify-center`]}>
+        <View style={[t`flex flex-row mt-[108px] justify-center`]}>
           <Text style={[t`mr-[8px]`]}>Already have an account?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text style={[t`text-[#4448AE] font-semibold`]}>Sign in</Text>

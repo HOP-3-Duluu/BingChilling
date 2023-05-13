@@ -91,12 +91,8 @@ export const Login = ({navigation}: any) => {
                 style={[t`w-[24px] h-[24px]`]}
                 source={
                   check
-                    ? {
-                        uri: 'https://i.ibb.co/TKzrT42/Screen-Shot-2023-04-15-at-11-45-16.png',
-                      }
-                    : {
-                        uri: 'https://i.ibb.co/3R63W5q/Screen-Shot-2023-04-15-at-11-48-37.png',
-                      }
+                    ? require('../../assets/Box.jpg')
+                    : require('../../assets/Check.jpg')
                 }></Image>
             </TouchableOpacity>
             <Text>Remember me</Text>
@@ -131,9 +127,7 @@ export const Login = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/1200px-Facebook_f_logo_%282021%29.svg.png',
-                }}
+                source={require('../../assets/Facebook.jpg')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -143,9 +137,7 @@ export const Login = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png',
-                }}
+                source={require('../../assets/Google.jpg')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -155,9 +147,7 @@ export const Login = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdQO_TyUapVDKPk9N3tV2tYI_0rWwM2fiSOQ&usqp=CAU',
-                }}
+                source={require('../../assets/Apple.jpg')}
               />
             </TouchableOpacity>
           </View>
