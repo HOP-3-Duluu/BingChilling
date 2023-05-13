@@ -100,7 +100,7 @@ export const HomeScreen = ({ navigation }: any) => {
              }}
              styles={styles.autocompleteContainer}
              query={{
-              key: 'AIzaSyAF76A1JtzoJ2hkIMZQCFegkvo9GSXlYKk',
+              key: '',
               language: 'en',
              }}/> 
             {selectedLocation && (
@@ -111,7 +111,7 @@ export const HomeScreen = ({ navigation }: any) => {
           <MapViewDirections
            origin={org}
            destination={des}
-           apikey={'AIzaSyAF76A1JtzoJ2hkIMZQCFegkvo9GSXlYKk'}
+           apikey={''}
            strokeColor='red'
            strokeWidth={2}
            mode='DRIVING'
@@ -150,7 +150,7 @@ export const HomeScreen = ({ navigation }: any) => {
         <Text style={t`text-[30px]`}>Cost per hour : Cost₮</Text>
         <Text style={t`text-[30px]`}>Phone : Phone</Text>
       </View>
-      <View style={[t`w-full h-full z-1 flex items-center justify-end absolute`]}>
+        <View style={[t`w-full h-full z-1 flex items-center justify-end absolute`]}>
                     <TouchableOpacity
                   style={[
                     t`bg-[#9C9FF0] w-[320px] h-[58px] rounded-[10px] flex items-center mb-[20px] justify-center`,
@@ -169,7 +169,7 @@ export const HomeScreen = ({ navigation }: any) => {
                   }}>
                   <Text style={[t`text-[#4448AE]`]}>Cancel</Text>
                 </TouchableOpacity>
-      </View>
+        </View>
       </View>
       </Modal>
         </View>
