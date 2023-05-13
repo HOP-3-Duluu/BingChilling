@@ -4,13 +4,15 @@ import { useEffect, useState } from "react";
 import { asyncStorage } from "../../utils/aws";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import LinearGradient from 'react-native-linear-gradient'
+import { useUserCont } from "../../contexts/userCont";
 
 const BaseOne = ({ navigation }: any) => {
-
+    
+    const user = useUserCont();
 
     useEffect(() => {
         asyncStorage?.getItem('intro').then((data) => {
-            // return data == 'onEnd' ? navigation?.navigate('Starter') : console.log(`New user.`);
+          return data == 'onEnd' && user?.isLogged == false ? navigation?.navigate('Starter') : console.log(`New user.`);
         })
     }, []);
 

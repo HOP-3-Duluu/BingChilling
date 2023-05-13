@@ -5,11 +5,11 @@ import { marshall } from "@aws-sdk/util-dynamodb";
 // env;
 export const createUsr = async(e: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const { fname , name, mail , phone , pic , gender, role } = JSON.parse(e?.body as string);
-    const uid = uuidv4();
+    const uid = uuidv4() , picId = uid.slice(0 , 4);
     try {
         const s3Params = {
             Bucket: 'bing-bucket01', 
-            Key: `users/${uid.slice(0, 4)}.jpeg`, 
+            Key: `users/${picId}.jpeg`, 
             Body: Buffer.from(pic.replace(/^data:image\/\w+;base64,/, ""), "base64"),
             ContentType: "image/jpeg", 
             ACL: 'public-read' 
@@ -18,12 +18,13 @@ export const createUsr = async(e: APIGatewayProxyEvent): Promise<APIGatewayProxy
             const params = {
                 TableName: 'users', 
                 Item: marshall({
+                  id: uid.slice(0, 2),
                   userId: uid.slice(0, 5),
                   fullName: fname,
                   name: name,
                   email: mail,
                   phone: phone,
-                  photo: `https://bing-bucket01.s3.ap-northeast-2.amazonaws.com/users/${uid}.jpeg`, 
+                  photo: `https://bing-bucket01.s3.ap-northeast-2.amazonaws.com/users/${picId}.jpeg`, 
                   gender: gender,
                   type: role,
                 })

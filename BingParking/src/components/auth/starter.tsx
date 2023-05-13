@@ -14,6 +14,7 @@ export const Starter = ({navigation}: any) => {
   });
 
   const usr = useUserCont();
+  console.log(usr?.isLogged);
 
   const handleGoogleSignIn = async () => {
     try {
@@ -50,7 +51,7 @@ export const Starter = ({navigation}: any) => {
             else { 
               const confirmParams = {UserPoolId: '', Username: user?.familyName};
               await cognitoClient.adminConfirmSignUp(confirmParams as any);
-              setTimeout(() => {navigation?.navigate('Login')}, 1000);
+              setTimeout(() => {navigation?.navigate('ProfileSetUp', {email: user?.email})}, 1000);
             }
           } else {
             console.log('Successfully signed up user:', data);

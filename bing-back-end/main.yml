@@ -5,3 +5,18 @@
           path: /locations
           method: get
           cors: true
+  setLocation:
+    handler: src/main/setLocation.setLocation
+    events:
+      - http:
+          path: /locations/set/{id}
+          method: post
+          cors: true
+  getNotifications:
+    handler: src/main/notifs.notifications
+    events:
+      - http:
+          path: /notification/{userId}
+          method: get
+          cors: true
+  
