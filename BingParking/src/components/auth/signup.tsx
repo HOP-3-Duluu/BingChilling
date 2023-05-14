@@ -8,7 +8,6 @@ import { asyncStorage, cognitoClient, userPool } from '../../utils/aws';
 import LinearGradient from 'react-native-linear-gradient'
 export const Signup = ({ navigation }: any) => {
   const [tap, setTap] = useState<any>(0);
-  const [check, setCheck] = useState<boolean>(false);
   const [mail, setMail] = useState<string>('');
   const [pw, setPw] = useState<string>('');
 
@@ -16,22 +15,25 @@ export const Signup = ({ navigation }: any) => {
     webClientId: '',
   });
 
-  const usr = useUserCont();
+  const usr = useUserCont() , params = {UserPoolId: "", AttributesToGet: ["email"]};
   const isValidEmail = (email: string) => { return /\S+@\S+\.\S+/.test(email) };
 
   const handleSignUp = async () => {
     try {
-      return await new Promise((res, rej) => {
+      return await new Promise(async(res, rej) => {
         if (mail != '' && pw != '') {
           if (!isValidEmail(mail)) {
             Alert.alert(`Invalid email: ${mail}`);
             setMail('');
             return;
-          }
-          navigation?.navigate('ProfileSetUp', { email: mail, pass: pw });
+          };
+          
+          await cognitoClient.listUsers(params).then((data) => {
+              data?.Users?.map(x => x?.Attributes?.map(val => val?.Value == mail ? Alert.alert('Email already exists.') : navigation?.navigate('ProfileSetUp', { email: mail, pass: pw }))); 
+          });
         }
         else {
-          Alert.alert(`Form not filled up`);
+          return Alert.alert(`Form not filled up`);
         };
       });
     } catch (e) {
@@ -66,7 +68,7 @@ export const Signup = ({ navigation }: any) => {
           if (err) {
             console.log('Error signing up user:', err?.message);
             if (err?.message == 'User already exists') {
-              cogUser.authenticateUser(details, {
+              return cogUser.authenticateUser(details, {
                 onSuccess: result => { res(result), asyncStorage?.setItem(`name`, user?.familyName as string), usr?.setIsLogged(true) },
                 onFailure: err => rej(`Rejected: ${err}`),
               });
@@ -74,10 +76,10 @@ export const Signup = ({ navigation }: any) => {
             else {
               const confirmParams = { UserPoolId: '', Username: user?.familyName };
               await cognitoClient.adminConfirmSignUp(confirmParams as any);
-              setTimeout(() => { navigation?.navigate('Login') }, 1000);
+              setTimeout(() => { navigation?.navigate('ProfileSetUp' , {email: user?.email}) }, 1000);
             }
           } else {
-            console.log('Successfully signed up user:', data);
+            console.log('Successfully signed up Google User:', data);
           }
         });
       });

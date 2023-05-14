@@ -1,9 +1,35 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { dynamoClient, headers, uid } from "../utils";
+import { marshall } from "@aws-sdk/util-dynamodb";
 
 export const notifications = async(e: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => { 
-    //types: payment , parkings , account   
+    //types: parkings , account 
+    let data: any;
+    try {
+        const params = {
+            TableName: 'notifications', 
+            indexName: 'userId', 
+            KeyConditionExpression: `#pk = :val`, 
+            ExpressionAttributeNames: {'#pk' : 'userId'},
+            ExpressionAttributeValues: marshall({':val' : e?.pathParameters?.userId})
+        };
+        
+        await dynamoClient.query(params).then((res) => {
+            data = res?.Items;
+        });
+        
+    } catch(e) {
+        console.log(e);
+        return {
+            statusCode: 503,
+            headers: headers,
+            body: JSON.stringify(`Error occured: ${e}`)
+        };
+    };
+
     return {
        statusCode: 200,
-       body: ''
+       headers: headers,
+       body: JSON.stringify({data: data})
     };
 };

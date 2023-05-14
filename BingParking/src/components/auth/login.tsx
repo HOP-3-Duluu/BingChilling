@@ -3,9 +3,8 @@ import { t } from '../../utils/style';
 import { useState } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
-import { asyncStorage, cognitoClient, userPool } from '../../utils/aws';
+import { asyncStorage , userPool } from '../../utils/aws';
 import { useUserCont } from '../../contexts/userCont';
-import LinearGradient from 'react-native-linear-gradient';
 
 export const Login = ({ navigation }: any) => {
   const [tap, setTap] = useState<any>(0);
@@ -29,7 +28,7 @@ export const Login = ({ navigation }: any) => {
 
         const userData = { Username: user?.familyName, Password: "TempPassword123!" }, details = new AuthenticationDetails(userData as any);
         if (idToken) {
-          cogUser.authenticateUser(details, {
+          return cogUser.authenticateUser(details, {
             onSuccess: result => { res(result), asyncStorage?.setItem(`name`, user?.familyName as string), usr?.setIsLogged(true)},
             onFailure: err => rej(`Rejected: ${err}`),
           });
@@ -44,7 +43,7 @@ export const Login = ({ navigation }: any) => {
     try {
       const cogUser = new CognitoUser({Username: mail as string, Pool: userPool});
           return cogUser.authenticateUser(details, {
-            onSuccess: result => {asyncStorage.setItem('name' , mail)},
+            onSuccess: result => {console.log(result) , asyncStorage.setItem('name' , mail), usr?.setIsLogged(true)},
             onFailure: err => console.log(`Rejected: ${err}`),
            });
     } catch(e) {
@@ -121,7 +120,7 @@ export const Login = ({ navigation }: any) => {
           style={[
             t`bg-[#9C9FF0] mt-[20px] w-[360px] h-[58px] rounded-[10px] flex items-center justify-center`,
           ]}
-          onPress={handleLogin}>
+          onPress={() => handleLogin()}>
           <Text style={[t`text-white`]}>Sign in</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Forgot')} style={[t`flex w-[360px] mt-[24px] items-center`]}>

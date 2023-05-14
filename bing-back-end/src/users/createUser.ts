@@ -1,8 +1,8 @@
 import { APIGatewayProxyEvent , APIGatewayProxyResult } from "aws-lambda";
-import { dynamoClient, env, headers, pv, s3Client } from "../utils";
+import { dynamoClient, headers, s3Client } from "../utils";
 import { v4 as uuidv4 } from 'uuid';
 import { marshall } from "@aws-sdk/util-dynamodb";
-// env;
+
 export const createUsr = async(e: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const { fname , name, mail , phone , pic , gender, role } = JSON.parse(e?.body as string);
     const uid = uuidv4() , picId = uid.slice(0 , 4);
