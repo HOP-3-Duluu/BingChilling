@@ -1,6 +1,6 @@
-import { Button, FlatList, Image, Text, TouchableOpacity, View, } from "react-native"
+import { Image, Text, TouchableOpacity, View, } from "react-native"
 import { styles, t } from "../../utils/style"
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useIsFocused } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient'

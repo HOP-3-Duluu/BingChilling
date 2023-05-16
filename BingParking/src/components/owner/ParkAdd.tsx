@@ -1,13 +1,4 @@
-import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image , KeyboardAvoidingView , Platform , StyleSheet , Text , TextInput, TouchableOpacity, View} from 'react-native';
 import {t} from '../../utils/style';
 import {useEffect, useRef, useState} from 'react';
 import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
@@ -43,7 +34,6 @@ export const ParkAdd = () => {
     setCost(formattedCost);
   };
 
-
   const handleMapPress = (e: any) => {
     setSelectedLocation(e?.nativeEvent?.coordinate);
     console.log(`Selected: ${JSON.stringify(selectedLocation)}`);
@@ -77,6 +67,7 @@ export const ParkAdd = () => {
         console.log(error);
       });
   };
+  
   return (
     <View style={[t`w-full h-full bg-white items-center`]}>
       <KeyboardAvoidingView
