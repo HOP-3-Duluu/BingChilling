@@ -21,7 +21,7 @@ export const UserContextProv = ({ children }: any) => {
     
     useEffect(() => {
         asyncStorage?.getItem('name').then((data) => {setUser(data)});
-        return user != null ? setIsLogged(true) : setIsLogged(false);
+        return user != null ? setIsLogged(true) : setIsLogged(true);
     }, [user]); 
 
     return (
