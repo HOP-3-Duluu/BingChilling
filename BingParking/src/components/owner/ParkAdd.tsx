@@ -5,6 +5,7 @@ import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import MapView, {Marker} from 'react-native-maps';
 import Modal from 'react-native-modal';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export const ParkAdd = () => {
   const [tap, setTap] = useState<boolean>(false);
@@ -12,13 +13,14 @@ export const ParkAdd = () => {
   const [touch, setTouch] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');
   const [photo, setPhoto] = useState<ImageOrVideo | any>(null);
-  const [count, setCount] = useState<number>(0);
+  const [clicked, setClicked] = useState<boolean>(false);
   const [selectedLocation, setSelectedLocation] = useState<any | null>(null);
   const [currentLocation, setCurrentLocation] = useState<any | null>(null);
   const mapsRef = useRef<any>('');
   const [visible, setVisible] = useState<boolean>(false);
   // phone photo name address {lat lon} : a location
   const [address, setAddress] = useState<any>(null);
+  const [cost, setCost] = useState<any>(null);
   const [name, setName] = useState<any>(null)
   const [lat, setLat] = useState<any | number>(0);
   const [lon, setLon] = useState<any | number>(0);
@@ -26,9 +28,10 @@ export const ParkAdd = () => {
   const handleTextChange = (text: string) => {
     const formattedText = text.replace(/[^0-9]/g, '');
     setValue(formattedText);
-    if (text.length == 8) {
-      setCount(count + 1);
-    }
+  };
+  const handlecCostChange = (text: string) => {
+    const formattedCost = text.replace(/[^0-9]/g, '');
+    setCost(formattedCost);
   };
 
   const handleMapPress = (e: any) => {
@@ -86,9 +89,7 @@ export const ParkAdd = () => {
                 style={[t`ml-[105px] absolute mt-[110px]`]}>
                 <Image
                   style={[t`h-[30px] w-[30px] rounded-[10px]`]}
-                  source={{
-                    uri: 'https://i.ibb.co/SNzyCcb/Group.png',
-                  }}
+                  source={require('../../assets/Exclude.jpg')}
                 />
               </TouchableOpacity>
             </View>
@@ -133,6 +134,27 @@ export const ParkAdd = () => {
             <View
               style={[
                 t`${
+                  clicked == true ? 'border-[#4448AE]' : 'border-[#EEEEEE]'
+                } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
+              ]}>
+              <TextInput
+                keyboardType="number-pad"
+                style={[t`ml-[15px] w-[308px] h-[60px] ml-[12px]`]}
+                onFocus={() => {
+                  setClicked(true);
+                }}
+                onBlur={() => {
+                  setClicked(false);
+                }}
+                value={cost}
+                placeholder="Cost per hour"
+                onChangeText={handlecCostChange}
+              />
+            </View>
+
+            <View
+              style={[
+                t`${
                   selected == true ? 'border-[#4448AE]' : 'border-[#EEEEEE]'
                 } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
               ]}>
@@ -153,10 +175,10 @@ export const ParkAdd = () => {
               />
             </View>
           </View>
-          <View style={[t`w-[350px] h-[250px] mt-[10px] flex items-center`]}>
-            <Text style={[t`text-10 text-[#4448AE]`]}>Select location</Text>
-          <TouchableOpacity style={[t`w-[350px] h-[180px]`]} onPress={() => setVisible(true)}>
-            <Image style={t`w-full h-full`} source={require('../../assets/map.png')}/>
+          <View style={[t`w-[350px] h-[250px] mt-[30px] flex items-center`]}>
+          <TouchableOpacity style={[t`flex-row justify-center`]} onPress={() => setVisible(true)}>
+          <Text style={[t`text-10 text-[#4448AE]`]}>Add location</Text>
+            <Icon name='location' color='#4448AE' size={50}/>
           </TouchableOpacity>
           <Modal style={t`flex items-center`} isVisible={visible}
         animationIn={'slideInUp'}
@@ -212,7 +234,7 @@ export const ParkAdd = () => {
           style={[
             t`bg-[#9C9FF0] mt-[20px] w-[360px] mb-[30px] h-[58px] rounded-[10px] flex items-center justify-center`,
           ]}
-          disabled={value.length == 8 && name != null && address != null && lon != 0 && lat != 0 ? false : true}>
+          disabled={value.length == 8 && name != null && address != null && cost != 0 && lon != 0 && lat != 0 ? false : true}>
           <Text style={[t`text-white`]}>Add</Text>
         </TouchableOpacity>
       </View>

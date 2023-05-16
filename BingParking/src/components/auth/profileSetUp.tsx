@@ -1,44 +1,36 @@
-import {
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Alert, Image,Keyboard,KeyboardAvoidingView,Platform,Text,TextInput,TouchableOpacity,View} from 'react-native';
 import ImagePicker, { ImageOrVideo } from "react-native-image-crop-picker";
 import {t} from '../../utils/style';
 import {useEffect, useState} from 'react';
 import {SelectList} from 'react-native-dropdown-select-list';
 import React from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { asyncStorage, cognitoClient, userPool } from '../../utils/aws';
+import { AuthenticationDetails, CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js';
+import { useUserCont } from '../../contexts/userCont';
+import AWSAPI from '../../utils/api';
 
 export const ProfSetUp = ({navigation, route}: any) => {
-  const { email , pass } = route.params;
+  const { email , pass} = route.params;
+
+  const user = useUserCont();
   const [tap, setTap] = useState<any>(0);
-  const [mail , setMail] = useState<string>(email);
-  const [name , setName] = useState<string>('');
   const [img, setImg] = useState<ImageOrVideo | any>(null);
+  const [flName , setFlname] = useState<string>('');
+  const [name , setName] = useState<string>('');
+  const [mail , setMail] = useState<string>('');
+  const [value, setValue] = useState<any>('');
+  const [gender , setGender] = useState<string>('');
+  const [tp , setTp] = useState<string>('');
   const [selected, setSelected] =useState<boolean>(false);
-  const [value, setValue] = useState<string>('');
   const [inputValue, setInputValue] = useState<string>('');
+  const isValidEmail = (email: string) => {return /\S+@\S+\.\S+/.test(email)};
 
-  const attributeList = [{Name: "email",Value: mail},{Name: 'name',Value: name}];
+  useEffect(() => {
+     if(email != '') setMail(email);
+  }, []);
 
-  // const params = {
-  //   ClientId: '',
-  //   Username: `Test`,
-  //   Password: pw,
-  //   UserAttributes: attributeList
-  // }
-  // cognitoClient.signUp(params).then(async() => {
-  //   const confirmParams = {UserPoolId: '',Username: 'Test'};
-  //   await cognitoClient.adminConfirmSignUp(confirmParams);
-  // });
-
+  const attributeList = [new CognitoUserAttribute({ Name: 'email', Value: mail }), new CognitoUserAttribute({ Name: 'name', Value: name })];
 
   const handleTextChange = (text: string) => {
     const formattedText = text.replace(/[^0-9]/g, '');
@@ -49,15 +41,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
     }
   };
 
-  const data = [
-    {key: '1', value: 'Male'},
-    {key: '2', value: 'Female'},
-  ];
-
-  const role = [
-    {key: '1', value: 'User'},
-    {key: '2', value: 'Owner'},
-  ]
+  const data = [{key: '1', value: 'Male'},{key: '2', value: 'Female'}] , role = [{key: '1', value: 'User'},{key: '2', value: 'Owner'}];
 
   const selectImages = () => {
     ImagePicker.openPicker({
@@ -73,6 +57,44 @@ export const ProfSetUp = ({navigation, route}: any) => {
       });
   };
 
+  const handleSignUp = async() => {
+      try {
+        return await new Promise((rej ,resolve) => {
+          if(name != '' && flName != '' && value != '' && gender != '' && tp != '' && img != null && mail != '') {
+            if(!isValidEmail(mail)) {
+               Alert.alert(`Not a valid mail. ${mail}`);
+               return;
+            };
+           userPool.signUp(name , pass , attributeList , null as any , async(err , res) => {
+            if(err) {rej(`ERROR: ${err?.message}`)};
+            const confirmParams = {UserPoolId: '',Username: name};
+            await AWSAPI.post('user/create' , {
+               fname: flName, name: name , mail: mail, phone: value, pic: img?.data, gender: gender, role: tp
+            }).then(async(res) => {  
+              await cognitoClient.adminConfirmSignUp(confirmParams).then((res) => {
+                if(res) {    
+                  const userData = {Username: name, Password: pass} , details = new AuthenticationDetails(userData);
+                  const cogUser = new CognitoUser({Username: name as string, Pool: userPool});
+                  cogUser.authenticateUser(details, {
+                    onSuccess: result => {resolve(result), console.log(result), asyncStorage.setItem('name' , name), user?.setIsLogged(true)},
+                    onFailure: err => rej(`Err: ${err?.message}`),
+                });
+                }
+                else {
+                   Alert.alert('Something went wrong.');
+                }
+              });
+            });
+           });
+          }
+         else {
+           Alert.alert('Form not completely filled');
+         }
+        })
+      } catch(e) {
+         console.log(e);
+      }
+  };
 
   return (
       <View style={[t`w-full h-full bg-white` ]}>
@@ -89,9 +111,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
         <TouchableOpacity onPress={() => selectImages()} style={[t`ml-[105px] absolute mt-[110px]`]}>
         <Image
         style={[t`h-[30px] w-[30px] rounded-[10px]`]}
-        source={{
-          uri: 'https://i.ibb.co/SNzyCcb/Group.png',
-        }}
+        source={require('../../assets/Exclude.jpg')}
       />
       </TouchableOpacity>
       </View>
@@ -112,6 +132,8 @@ export const ProfSetUp = ({navigation, route}: any) => {
             setTap(0);
           }}
           placeholder="Full Name"
+          onChangeText={(text) => setFlname(text)}
+          value={flName}
         />
       </View>
       <View
@@ -131,6 +153,8 @@ export const ProfSetUp = ({navigation, route}: any) => {
             setTap(2);
           }}
           placeholder="Nickname"
+          onChangeText={(text) => setName(text)}
+          value={name}
         />
       </View>
     
@@ -152,7 +176,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
           }}
           placeholder="Email"
           autoCapitalize='none'
-          value={email}
+          value={mail}
           onChangeText={(txt) => setMail(txt)}
         />
         <Image
@@ -171,7 +195,6 @@ export const ProfSetUp = ({navigation, route}: any) => {
               : `${tap == 9 ? 'border-[#4448AE]' : 'border-[#EEEEEE]'}`
           } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
         ]}>
-        {/* here a dropdown list of a map*/}
         <Text style={[t`ml-[20px]`]}>+976</Text>
         <TextInput
           keyboardType="number-pad"
@@ -183,14 +206,13 @@ export const ProfSetUp = ({navigation, route}: any) => {
           onBlur={() => {
             setTap(8);
           }}
-          
           value={value}
           placeholder="Phone number"
           onChangeText={handleTextChange}
         />
       </View>
       <SelectList
-            setSelected={() => setSelected(true)}
+            setSelected={(e: any) => {setSelected(true) , setGender(data[e - 1]?.value)}}
             boxStyles={t`w-[360px] mt-[20px] h-[60px] rounded-[10px] border-[#EEEEEE] bg-[#F8F7FD] border-[1px] flex flex-row items-center`}
             dropdownStyles={t`w-[360px] rounded-[10px] border-[#EEEEEE] bg-[#F8F7FD] border-[1px] flex flex-row items-center`}
             data={data}
@@ -198,7 +220,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
             search={false}
           />
          <SelectList
-            setSelected={() => setSelected(true)}
+            setSelected={(e: any) => {setSelected(true), setTp(role[e - 1]?.value)}}
             boxStyles={t`w-[360px] mt-[20px] h-[60px] rounded-[10px] border-[#EEEEEE] bg-[#F8F7FD] border-[1px] flex flex-row items-center`}
             dropdownStyles={t`w-[360px] rounded-[10px] border-[#EEEEEE] bg-[#F8F7FD] border-[1px] flex flex-row items-center`}
             data={role}
@@ -212,7 +234,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
           style={[
             t`bg-[#9C9FF0] mt-[20px] w-[360px] mb-[30px] h-[58px] rounded-[10px] flex items-center justify-center`,
           ]}
-          onPress={() => ''}>
+          onPress={handleSignUp}>
           <Text style={[t`text-white`]}>Continue</Text>
         </TouchableOpacity>
         </View>

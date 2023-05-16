@@ -24,7 +24,7 @@ export const Forgotpass = ({ navigation }: any) => {
                                 </View>
                                 <View style={[t`flex flex-col justify-start mt-[35px] mb-[39px] ml-[20px] mr-[24px]`]} >
                                     <Text style={[{ lineHeight: 19.6 }, t`text-sm text-[#757575]`]}>via SMS:</Text>
-                                    <Text style={[{ lineHeight: 60 }, t`font-bold`]}>+976 898989898</Text>
+                                    <Text style={[{ lineHeight: 60 }, t`font-bold`]}>+976 ********</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>

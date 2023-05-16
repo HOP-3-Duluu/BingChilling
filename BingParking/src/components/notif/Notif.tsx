@@ -15,15 +15,16 @@ export const Notification = ({navigation}: any) => {
 
     const uniqueDates = [...new Set(data.map((item: any) => item.date))];
     //back-end , notification -> type: 'Payment' -> navigate to payment section
+    //hm?
     const NotifBanner = ({src , title , desc, date}: any) => {
         return (
             <View style={t`flex flex-row justify-start items-center w-86 h-28 bg-white rounded-lg`}>
                <View style={t`flex flex-col justify-center items-center p-5`}>
                   <Image source={{uri: src}} resizeMode="contain" style={t`flex w-20 h-20 rounded-full`}/>
                </View>
-               <View style={t`flex flex-col justify-start w-32`}>
+               <View style={t`flex flex-col justify-start w-52 h-12 mb-5`}>
                     <Text style={t`pb-1.5 font-bold text-sm`}>{title}</Text>
-                    <Text style={t`text-[#616161] text-sm`}>{desc}</Text>
+                    <Text style={t`text-[#616161] text-sm max-h-full`} numberOfLines={desc?.length}>{desc}</Text>
                </View>
             </View>
         )

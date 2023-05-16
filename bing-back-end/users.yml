@@ -11,3 +11,10 @@
           path: /user/get/{id}
           method: get
           cors: true
+  updateUser:
+    handler: src/users/getUser.getUser
+    events:
+      - http:
+          path: /user/get/{id}
+          method: get
+          cors: true

@@ -13,9 +13,6 @@ const SearchMain = ({ navigation, route }: any) => {
 
     const storeSearchHistory = async (searchedText: any) => {
 
-        // const x = Object.entries(book);
-        //{name , lat , lon}
-        //  setBooks(books => [...books, ...x]);
         try {
             const history: any = [...searchHistory, searchedText];
             await asyncStorage.setItem('searchHistory', JSON.stringify(history));
@@ -75,7 +72,6 @@ const SearchMain = ({ navigation, route }: any) => {
                         key: 'AIzaSyAF76A1JtzoJ2hkIMZQCFegkvo9GSXlYKk',
                         language: 'en',
                     }} />
-                {/* <IonIcons style={t`flex absolute right-7 top-3`} size={24} color={"#4448AE"} name="options-outline"></IonIcons> */}
             </View>
             <View style={t`border-t-[1px] w-[380px] mt-5 border-[#EEEEEE]`}>
                 <Text style={t`flex font-bold top-4 ml-[10px]`}>Recent</Text>

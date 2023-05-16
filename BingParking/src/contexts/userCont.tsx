@@ -18,15 +18,10 @@ export const UserContextProv = ({ children }: any) => {
     const [currentLocation, setCurrentLocation] = useState<any | null>(null);
     const [user, setUser] = useState<any | null>(null);
     const [isLogged, setIsLogged] = useState<boolean>(false);
-    // const apiBaseUrl = process.env.TESTING;
-    // console.log(apiBaseUrl);
-
+    
     useEffect(() => {
-        asyncStorage?.getItem('name').then((data) => setUser(data));
-        if (user != null) {
-            setIsLogged(true);
-        }
-        setIsLogged(true);
+        asyncStorage?.getItem('name').then((data) => {setUser(data)});
+        return user != null ? setIsLogged(true) : setIsLogged(false);
     }, [user]); 
 
     return (

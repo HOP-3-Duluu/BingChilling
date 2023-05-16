@@ -6,7 +6,7 @@ import 'react-native-url-polyfill/auto';
 import 'react-native-get-random-values';
 import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import { useUserCont } from '../../contexts/userCont';
-
+import LinearGradient from 'react-native-linear-gradient'
 export const Starter = ({navigation}: any) => {
 
   GoogleSignin.configure({
@@ -14,6 +14,7 @@ export const Starter = ({navigation}: any) => {
   });
 
   const usr = useUserCont();
+  console.log(usr?.isLogged);
 
   const handleGoogleSignIn = async () => {
     try {
@@ -50,7 +51,7 @@ export const Starter = ({navigation}: any) => {
             else { 
               const confirmParams = {UserPoolId: '', Username: user?.familyName};
               await cognitoClient.adminConfirmSignUp(confirmParams as any);
-              setTimeout(() => {navigation?.navigate('Login')}, 1000);
+              setTimeout(() => {navigation?.navigate('ProfileSetUp', {email: user?.email})}, 1000);
             }
           } else {
             console.log('Successfully signed up user:', data);
@@ -71,9 +72,7 @@ export const Starter = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px] mr-[12px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/1200px-Facebook_f_logo_%282021%29.svg.png',
-                }}
+                source={require('../../assets/Facebook.jpg')}
               />
           <Text>
             Continue with Facebook
@@ -85,9 +84,7 @@ export const Starter = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px] mr-[12px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png',
-                }}
+                source={require('../../assets/Google.jpg')}
               />
           <Text>
             Continue with Google
@@ -99,9 +96,7 @@ export const Starter = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px] mr-[12px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdQO_TyUapVDKPk9N3tV2tYI_0rWwM2fiSOQ&usqp=CAU',
-                }}
+                source={require('../../assets/Apple.jpg')}
               />
           <Text>
             Continue with Apple
@@ -116,13 +111,19 @@ export const Starter = ({navigation}: any) => {
         <Text>or</Text>
         <View style={[t`border-[1px] h-[0px] w-[165px] border-[#EEEEEE]`]} />
       </View>
-      <TouchableOpacity
-        style={[
-          t`bg-[#9C9FF0] mt-[20px] w-[360px] h-[58px] rounded-[10px] flex items-center justify-center`,
-        ]}
-        onPress={() => navigation.navigate('Login')}>
-        <Text style={[t`text-white`]}>Sign in with password</Text>
-      </TouchableOpacity>
+      <TouchableOpacity onPress={()=> navigation.navigate('Login')} style={t`pb-[15px]`}>
+                            <LinearGradient
+                                colors={['#CEC9F2', '#9C9FF0']}
+                                style={{
+                                    width: 360, height: 58, borderRadius: 10, alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Text style={t`text-white text-[16px] leading-[22.4px] `}>Login</Text>
+                            </LinearGradient>
+
+                        </TouchableOpacity>
+      
       <View style={[t`flex flex-row mt-[70px]`]}>
         <Text style={[t`mr-[8px]`]}>Don't have an account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Signup')}>

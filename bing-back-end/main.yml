@@ -5,3 +5,32 @@
           path: /locations
           method: get
           cors: true
+  getSpecificLoc:
+    handler: src/main/getSpecLoc.getSpecloc
+    events:
+      - http:
+          path: /location/spec/{id}
+          method: get
+          cors: true
+  setLocation:
+    handler: src/main/setLocation.setLocation
+    events:
+      - http:
+          path: /locations/set/{id}
+          method: post
+          cors: true
+  getNotifications:
+    handler: src/main/notifs.notifications
+    events:
+      - http:
+          path: /notification/{userId}
+          method: get
+          cors: true
+  sendSQS: 
+    handler: src/main/sendSqs.mainSqsHandler
+    events:
+      - http:
+          path: /sqs
+          method: post
+          cors: true
+  

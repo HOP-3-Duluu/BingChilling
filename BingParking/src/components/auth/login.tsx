@@ -1,40 +1,55 @@
-import {Image,Text,TextInput,TouchableOpacity,View} from 'react-native';
-import {t} from '../../utils/style';
-import {useState} from 'react';
+import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { t } from '../../utils/style';
+import { useState } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
-import { asyncStorage, cognitoClient, userPool } from '../../utils/aws';
+import { asyncStorage , userPool } from '../../utils/aws';
 import { useUserCont } from '../../contexts/userCont';
 
-export const Login = ({navigation}: any) => {
+export const Login = ({ navigation }: any) => {
   const [tap, setTap] = useState<any>(0);
   const [check, setCheck] = useState<boolean>(false);
+  const [mail , setMail] = useState<string>('');
+  const [pass , setPass] = useState<string>('');
   const usr = useUserCont();
+  const userData = {Username: mail, Password: pass} , details = new AuthenticationDetails(userData);
   GoogleSignin.configure({
     webClientId: '',
   });
 
   const handleGoogleSignIn = async () => {
     try {
-      await new Promise(async(res , rej) => {
+      await new Promise(async (res, rej) => {
         const { idToken, user } = await GoogleSignin.signIn();
         const cogUser = new CognitoUser({
-          Username: user?.familyName as string, 
+          Username: user?.familyName as string,
           Pool: userPool,
         });
-    
-        const userData = {Username: user?.familyName, Password: "TempPassword123!"} , details = new AuthenticationDetails(userData as any); 
-        if(idToken) {
-          cogUser.authenticateUser(details, {
-              onSuccess: result => {res(result), asyncStorage?.setItem(`name` , user?.familyName as string), usr?.setIsLogged(true)},
-              onFailure: err => rej(`Rejected: ${err}`),
-            });
-         };
+
+        const userData = { Username: user?.familyName, Password: "TempPassword123!" }, details = new AuthenticationDetails(userData as any);
+        if (idToken) {
+          return cogUser.authenticateUser(details, {
+            onSuccess: result => { res(result), asyncStorage?.setItem(`name`, user?.familyName as string), usr?.setIsLogged(true)},
+            onFailure: err => rej(`Rejected: ${err}`),
+          });
+        };
       });
     } catch (error) {
       console.log(error);
     };
   };
+
+  const handleLogin = async() => {
+    try {
+      const cogUser = new CognitoUser({Username: mail as string, Pool: userPool});
+          return cogUser.authenticateUser(details, {
+            onSuccess: result => {console.log(result) , asyncStorage.setItem('name' , mail), usr?.setIsLogged(true)},
+            onFailure: err => console.log(`Rejected: ${err}`),
+           });
+    } catch(e) {
+       console.log(e);
+    }
+  }
 
   return (
     <View style={[t`w-full h-full bg-white flex justify-center items-center`]}>
@@ -43,10 +58,9 @@ export const Login = ({navigation}: any) => {
         <Text style={[t`text-[48px] font-bold text-[#999CF0]`]}>Account</Text>
         <View style={[t`mt-[45px]`]}>
           <View style={[
-              t`${
-                tap == 0
-                  ? 'border-[#EEEEEE]'
-                  : `${tap == 1 ? 'border-[#4448AE]' : 'border-[#EEEEEE]'}`
+            t`${tap == 0
+              ? 'border-[#EEEEEE]'
+              : `${tap == 1 ? 'border-[#4448AE]' : 'border-[#EEEEEE]'}`
               } w-[360px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
             ]}>
               <Image style={[t`h-[20px] w-[20px] ml-[20px]`]} resizeMode="contain" source={{uri: "https://i.ibb.co/2Zy3MGd/Screen-Shot-2023-04-15-at-13-22-37.png"}}/>
@@ -58,14 +72,15 @@ export const Login = ({navigation}: any) => {
             onBlur={() => {
               setTap(0);
             }}
+            onChangeText={(text) => setMail(text)}
+            autoCapitalize='none'
             placeholder="Email"
           />
           </View>
           <View style={[
-              t`${
-                tap == 2
-                  ? 'border-[#EEEEEE]'
-                  : `${tap == 3 ? 'border-[#4448AE]' : 'border-[#EEEEEE]'}`
+            t`${tap == 2
+              ? 'border-[#EEEEEE]'
+              : `${tap == 3 ? 'border-[#4448AE]' : 'border-[#EEEEEE]'}`
               } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
             ]}>
               <Image style={[t`h-[20px] w-[20px] ml-[20px]`]} resizeMode="contain" source={{uri: "https://i.ibb.co/kHT8KqM/Screen-Shot-2023-04-15-at-13-28-14.png"}}/>
@@ -77,6 +92,8 @@ export const Login = ({navigation}: any) => {
             onBlur={() => {
               setTap(2);
             }}
+            onChangeText={(text) => setPass(text)}
+            autoCapitalize='none'
             placeholder="Password"
           />
           </View>
@@ -91,12 +108,8 @@ export const Login = ({navigation}: any) => {
                 style={[t`w-[24px] h-[24px]`]}
                 source={
                   check
-                    ? {
-                        uri: 'https://i.ibb.co/TKzrT42/Screen-Shot-2023-04-15-at-11-45-16.png',
-                      }
-                    : {
-                        uri: 'https://i.ibb.co/3R63W5q/Screen-Shot-2023-04-15-at-11-48-37.png',
-                      }
+                    ? require('../../assets/Box.jpg')
+                    : require('../../assets/Check.jpg')
                 }></Image>
             </TouchableOpacity>
             <Text>Remember me</Text>
@@ -107,11 +120,11 @@ export const Login = ({navigation}: any) => {
           style={[
             t`bg-[#9C9FF0] mt-[20px] w-[360px] h-[58px] rounded-[10px] flex items-center justify-center`,
           ]}
-          onPress={() => {}}>
+          onPress={() => handleLogin()}>
           <Text style={[t`text-white`]}>Sign in</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('')} style={[t`flex w-[360px] mt-[24px] items-center`]}>
-          <Text style={[t`text-[#4D5DFA]`]}>Forgot the password?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Forgot')} style={[t`flex w-[360px] mt-[24px] items-center`]}>
+          <Text  style={[t`text-[#4D5DFA]`]}>Forgot the password?</Text>
         </TouchableOpacity>
         <View style={[t`mt-[30px] w-[360px] h-[65px] flex flex-col`]}>
           <View
@@ -131,9 +144,7 @@ export const Login = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Facebook_f_logo_%282021%29.svg/1200px-Facebook_f_logo_%282021%29.svg.png',
-                }}
+                source={require('../../assets/Facebook.jpg')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -143,9 +154,7 @@ export const Login = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png',
-                }}
+                source={require('../../assets/Google.jpg')}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -155,9 +164,7 @@ export const Login = ({navigation}: any) => {
               <Image
                 style={[t`w-[24px] h-[24px]`]}
                 resizeMode="contain"
-                source={{
-                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdQO_TyUapVDKPk9N3tV2tYI_0rWwM2fiSOQ&usqp=CAU',
-                }}
+                source={require('../../assets/Apple.jpg')}
               />
             </TouchableOpacity>
           </View>
