@@ -16,7 +16,6 @@ export const UserContextProv = ({children}: any) => {
 
     const [user, setUser] = useState<any | null>(null);
     const [isLogged , setIsLogged] = useState<boolean>(false);
-    // const apiBaseUrl = process.env.TESTING;
     
     useEffect(() => {
         asyncStorage?.getItem('name').then((data) => {setUser(data)});

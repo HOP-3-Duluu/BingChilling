@@ -39,6 +39,6 @@ export const createUsr = async(e: APIGatewayProxyEvent): Promise<APIGatewayProxy
     return {
         statusCode: 200,
         headers: headers,
-        body: `User has been created!`
+        body: JSON.stringify(`User has been created!`)
     };  
 };  

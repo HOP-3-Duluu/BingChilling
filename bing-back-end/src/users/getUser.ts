@@ -7,23 +7,16 @@ export const getUser = async(e: APIGatewayProxyEvent): Promise<APIGatewayProxyRe
     try {
         const params = {
             TableName: 'users', 
-            IndexName: 'userId', 
-            KeyConditionExpression: '#pk = :val',
-            ExpressionAttributeNames: {
-            '#pk': 'userId',
-             },
-             ExpressionAttributeValues: marshall({
-            ':val': e?.pathParameters?.id as string,
-             })
+            Key: marshall({name: e?.pathParameters?.id})
         }; 
 
-       data = await dynamoClient.query(params); 
+       data = await dynamoClient.getItem(params);
     } catch(e) {
         console.log(e);
     }
     return {
         statusCode: 200,
         headers: headers,
-        body: JSON.stringify({data: data?.Items[0]})
+        body: JSON.stringify({data: data?.Item})
     };
 }; 

@@ -15,12 +15,6 @@ export const TabScreen = () => {
                     headerShown: false
                 }}/>
             <Tab.Screen options={{
-                tabBarLabel: "Booking",
-                tabBarActiveTintColor: '#4448AE',
-                tabBarIcon: ({color}) => (<Icon name="book" color={color} size={25} ></Icon>),
-                headerShown: false
-                }} name="Booking" component={HomeScreen}/>
-            <Tab.Screen options={{
                 tabBarLabel: "Profile",
                 tabBarActiveTintColor: '#4448AE',
                 tabBarIcon: ({color}) => (<Icon name="person-outline" color={color} size={25} ></Icon>),

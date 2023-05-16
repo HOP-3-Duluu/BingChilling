@@ -9,4 +9,4 @@ let poolData = {
 
 export const asyncStorage = AsyncStorage;
 export const userPool = new CognitoUserPool(poolData);
-export const cognitoClient = new CognitoIdentityProvider({ region: "ap-northeast-2", credentials: {accessKeyId: `AKIATOEOZICRFGQRS4VK` as string, secretAccessKey: `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` as string}});
+export const cognitoClient = new CognitoIdentityProvider({ region: "ap-northeast-2", credentials: {accessKeyId: `` as string, secretAccessKey: `` as string}});
