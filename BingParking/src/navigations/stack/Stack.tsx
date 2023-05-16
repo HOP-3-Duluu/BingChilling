@@ -11,6 +11,7 @@ import Createnewpass from '../../components/forgotpass/cnp';
 import { useUserCont } from '../../contexts/userCont';
 import { EditProfile, Help } from '../../components/prof';
 import { ParkAdd } from '../../components/owner';
+import { SearchMain } from '../../components/search';
 
 export const StackScreen = () => {
 
@@ -25,6 +26,8 @@ export const StackScreen = () => {
           <Stack.Screen name="EditProfile" component={EditProfile} options={{header: (e:any ) => <Header navigation={e.navigation} />}}/>
           <Stack.Screen name="Help" component={Help} options={{header: (e:any ) => <Header bg="#000000" navigation={e.navigation} />}}/>
           <Stack.Screen name="ParkAdd" component={ParkAdd} options={{header: (e:any ) => <Header title="Add" navigation={e.navigation} />}}/>
+          <Stack.Screen name='Search' component={SearchMain} options={{header: (e: any) => <Header navigation={e.navigation} bg="#F8F7FD" title="Search"/>}}/>
+
         </Stack.Navigator>
      );
   }

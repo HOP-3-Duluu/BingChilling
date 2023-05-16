@@ -1,6 +1,6 @@
-import { Button, Image, Text, View } from "react-native"
+import { Image, Text, View } from "react-native"
 import { styles, t } from "../../utils/style"
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { asyncStorage } from "../../utils/aws";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import LinearGradient from 'react-native-linear-gradient'

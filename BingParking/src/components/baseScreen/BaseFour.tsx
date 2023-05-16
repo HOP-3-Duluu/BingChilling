@@ -1,4 +1,4 @@
-import { Button, Image, Text, TouchableOpacity, View, } from "react-native"
+import { Image, Text, TouchableOpacity, View, } from "react-native"
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { styles, t } from "../../utils/style"
 import { useEffect, } from "react";
