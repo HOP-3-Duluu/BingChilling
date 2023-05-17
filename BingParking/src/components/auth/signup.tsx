@@ -6,16 +6,17 @@ import { useUserCont } from '../../contexts/userCont';
 import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import { asyncStorage, cognitoClient, userPool } from '../../utils/aws';
 import LinearGradient from 'react-native-linear-gradient'
+import { client_id, google_client, pool_id } from '../../../env';
 export const Signup = ({ navigation }: any) => {
   const [tap, setTap] = useState<any>(0);
   const [mail, setMail] = useState<string>('');
   const [pw, setPw] = useState<string>('');
 
   GoogleSignin.configure({
-    webClientId: '',
+    webClientId: google_client as string,
   });
 
-  const usr = useUserCont() , params = {UserPoolId: "", AttributesToGet: ["email"]};
+  const usr = useUserCont() , params = {UserPoolId: "ap-northeast-2_N3CYzClGS", AttributesToGet: ["email"]};
   const isValidEmail = (email: string) => { return /\S+@\S+\.\S+/.test(email) };
 
   const handleSignUp = async () => {
@@ -29,6 +30,7 @@ export const Signup = ({ navigation }: any) => {
           };
           
           await cognitoClient.listUsers(params).then((data) => {
+              if(data?.Users?.length == 0) return navigation?.navigate('ProfileSetUp', { email: mail, pass: pw });
               data?.Users?.map(x => x?.Attributes?.map(val => val?.Value == mail ? Alert.alert('Email already exists.') : navigation?.navigate('ProfileSetUp', { email: mail, pass: pw }))); 
           });
         }
@@ -46,7 +48,7 @@ export const Signup = ({ navigation }: any) => {
       await new Promise(async (res, rej) => {
         const { idToken, user } = await GoogleSignin.signIn();
         console.log(user);
-        const clientId = '';
+        const clientId = client_id as string;
         const params = {
           ClientId: clientId,
           Username: user?.familyName,
@@ -74,7 +76,7 @@ export const Signup = ({ navigation }: any) => {
               });
             }
             else {
-              const confirmParams = { UserPoolId: '', Username: user?.familyName };
+              const confirmParams = { UserPoolId: pool_id as string, Username: user?.familyName };
               await cognitoClient.adminConfirmSignUp(confirmParams as any);
               setTimeout(() => { navigation?.navigate('ProfileSetUp' , {email: user?.email}) }, 1000);
             }

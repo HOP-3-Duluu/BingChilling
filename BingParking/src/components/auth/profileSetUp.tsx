@@ -9,6 +9,7 @@ import { asyncStorage, cognitoClient, userPool } from '../../utils/aws';
 import { AuthenticationDetails, CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import { useUserCont } from '../../contexts/userCont';
 import AWSAPI from '../../utils/api';
+import { pool_id } from '../../../env';
 
 export const ProfSetUp = ({navigation, route}: any) => {
   const { email , pass} = route.params;
@@ -67,7 +68,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
             };
            userPool.signUp(name , pass , attributeList , null as any , async(err , res) => {
             if(err) {rej(`ERROR: ${err?.message}`)};
-            const confirmParams = {UserPoolId: '',Username: name};
+            const confirmParams = {UserPoolId: pool_id as string , Username: name};
             await AWSAPI.post('user/create' , {
                fname: flName, name: name , mail: mail, phone: value, pic: img?.data, gender: gender, role: tp
             }).then(async(res) => {  
@@ -76,7 +77,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
                   const userData = {Username: name, Password: pass} , details = new AuthenticationDetails(userData);
                   const cogUser = new CognitoUser({Username: name as string, Pool: userPool});
                   cogUser.authenticateUser(details, {
-                    onSuccess: result => {resolve(result), console.log(result), asyncStorage.setItem('name' , name), user?.setIsLogged(true)},
+                    onSuccess: result => {resolve(result), console.log(result), asyncStorage.setItem('name' , name.toLocaleLowerCase().trim()), user?.setIsLogged(true)},
                     onFailure: err => rej(`Err: ${err?.message}`),
                 });
                 }

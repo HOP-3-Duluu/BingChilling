@@ -9,7 +9,7 @@ export const updateUser = async(e: APIGatewayProxyEvent): Promise<APIGatewayProx
     try {
        const params = {
           TableName: 'users', 
-          Key: marshall({name: e?.pathParameters?.id}), 
+          Key: marshall({id: e?.pathParameters?.id}), 
           UpdateExpression: "SET fullName = :flName, name = :name, email = :mail, phone = :num, gender = :gen", 
           ExpressionAttributeValues: marshall({
             ':flName': fName,':name': name,':mail': mail,':num': phone,':gen': gender})

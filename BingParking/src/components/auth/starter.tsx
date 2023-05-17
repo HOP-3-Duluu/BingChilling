@@ -7,10 +7,11 @@ import 'react-native-get-random-values';
 import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import { useUserCont } from '../../contexts/userCont';
 import LinearGradient from 'react-native-linear-gradient'
+import { client_id, google_client , pool_id } from '../../../env';
 export const Starter = ({navigation}: any) => {
 
   GoogleSignin.configure({
-    webClientId: '',
+    webClientId: google_client,
   });
 
   const usr = useUserCont();
@@ -18,10 +19,10 @@ export const Starter = ({navigation}: any) => {
 
   const handleGoogleSignIn = async () => {
     try {
-      await new Promise(async(res , rej) => {
+      return await new Promise(async(res , rej) => {
         const { idToken, user } = await GoogleSignin.signIn();
         console.log(user);
-        const clientId = '';
+        const clientId = client_id as string;
         const params = {
           ClientId: clientId,
           Username: user?.familyName,
@@ -49,10 +50,11 @@ export const Starter = ({navigation}: any) => {
               });
             }
             else { 
-              const confirmParams = {UserPoolId: '', Username: user?.familyName};
-              await cognitoClient.adminConfirmSignUp(confirmParams as any);
-              setTimeout(() => {navigation?.navigate('ProfileSetUp', {email: user?.email})}, 1000);
-            }
+              const confirmParams = {UserPoolId: pool_id as string, Username: user?.familyName};
+              return await cognitoClient.adminConfirmSignUp(confirmParams as any).then(() => {
+                setTimeout(() => {navigation?.navigate('ProfileSetUp', {email: user?.email})}, 1000);
+              });
+            };
           } else {
             console.log('Successfully signed up user:', data);
           }

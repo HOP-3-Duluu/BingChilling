@@ -1,14 +1,14 @@
-import { Button, Image, Text, TextInput, View, TouchableOpacity, FlatList, StyleSheet } from "react-native"
+import { Button, Text, View, TouchableOpacity, FlatList, StyleSheet } from "react-native"
 import { styles, t } from "../../utils/style"
-import IonIcons from 'react-native-vector-icons/Ionicons';
 import React, { useState, useEffect } from 'react';
 import { asyncStorage } from "../../utils/aws";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useUserCont } from '../../contexts/userCont';
+import { google_api } from "../../../env";
 
 const SearchMain = ({ navigation, route }: any) => {
     const useLoc = useUserCont();
-    const [savedLocation, setSavedLoaction] = useState<any>()
+    const [savedLocation, setSavedLoaction] = useState<any>();
     const [searchHistory, setSearchHistory] = useState<any[]>([]);
 
     const storeSearchHistory = async (searchedText: any) => {
@@ -52,8 +52,9 @@ const SearchMain = ({ navigation, route }: any) => {
     );
 
     const clearAsyncStorage = async () => {
-        asyncStorage.clear();
-    }
+        await asyncStorage.clear();
+    };
+
     return (
         <View style={t`flex flex-col w-full items-center `}>
 
@@ -69,7 +70,7 @@ const SearchMain = ({ navigation, route }: any) => {
                     }}
                     styles={styless.autocompleteContainer}
                     query={{
-                        key: 'AIzaSyAF76A1JtzoJ2hkIMZQCFegkvo9GSXlYKk',
+                        key: google_api,
                         language: 'en',
                     }} />
             </View>

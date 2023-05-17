@@ -5,9 +5,11 @@ import {useState} from 'react';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import { useUserCont } from '../../contexts/userCont';
 
 export const Profile = ({navigation}: any) => {
   const [visible, setVisible] = useState<boolean>(false);
+  const user = useUserCont();
 
   return (
     <View style={[t`w-full h-full bg-white items-center`]}>
@@ -19,10 +21,10 @@ export const Profile = ({navigation}: any) => {
           </View>
           <Image
             style={[t`h-[140px] w-[140px] rounded-[100px] flex items-center`]}
-            source={require('../../assets/user.jpg')}
+            source={{uri: user?.user?.photo?.S}}
           />
-          <Text style={[t`font-bold	text-[24px] mt-[12px]`]}>Name here</Text>
-          <Text style={[t`text-[14px] mt-[12px]`]}>Email here</Text>
+          <Text style={[t`font-bold	text-[24px] mt-[12px]`]}>{user?.user?.name?.S}</Text>
+          <Text style={[t`text-[14px] mt-[12px]`]}>{user?.user?.email?.S}</Text>
         </View>
         <View
           style={[t`w-full border-[1px] h-[1px] border-[#EEEEEE] mt-[24px]`]}

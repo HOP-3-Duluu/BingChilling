@@ -7,7 +7,7 @@ export const deleteUser = async(e: APIGatewayProxyEvent): Promise<APIGatewayProx
     try {
        const params = {
           TableName: 'users', 
-          Key: marshall({name: e?.pathParameters?.id as string})
+          Key: marshall({id: e?.pathParameters?.id as string})
        };
 
        await dynamoClient.getItem(params).then(async(res) => {

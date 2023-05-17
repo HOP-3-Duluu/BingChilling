@@ -1,4 +1,4 @@
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { Image, PermissionsAndroid, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import Geolocation from 'react-native-geolocation-service';
 import notifee from '@notifee/react-native';
 import MapViewDirections from 'react-native-maps-directions';
@@ -8,6 +8,7 @@ import MapView, { Marker } from "react-native-maps";
 import { t } from "../utils/style";
 import { useUserCont } from '../contexts/userCont';
 import Modal from 'react-native-modal';
+import { google_api } from "../../env";
 
 //       const sendNotifcation = async({title , body}: any) => {
 //         await notifee.displayNotification({
@@ -29,12 +30,12 @@ export const HomeScreen = ({ navigation }: any) => {
   const mapsRef = useRef<any>('');
   const [rc, setRc] = useState<boolean>(false);
   const [id, setId] = useState<any | null>(null);
-  const [org, setOrg] = useState<any>({ latitude: 36.1871635, longitude: -120.8211910 });
+  // const [org, setOrg] = useState<any>({ latitude: 36.1871635, longitude: -120.8211910 });
   const [des, setDes] = useState<any>({ latitude: 37.3318456, longitude: -122.0296002 });
   const [lan, setLan] = useState<any | number>(0);
   const [lon, setLon] = useState<any | number>(0);
-  const [selectedLocation, setSelectedLocation] = useState<any | null>(null);
   const [selectedParking, setSelectedParking] = useState<boolean>(false);
+  const user = useUserCont();
 
   const requestLocationPermission = async () => {
     if (Platform.OS === 'ios') {
@@ -45,30 +46,42 @@ export const HomeScreen = ({ navigation }: any) => {
         error => console.log(error),
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
       )
+    } 
+    else {
+      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+      if(granted == 'granted') {    
+        Geolocation.getCurrentPosition(position => {
+            useLoc?.setCurrentLocation(position.coords); 
+          },
+          error => console.log(error),
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
+       }; 
     };
   };
 
   useEffect(() => {
     useLoc?.currentLocation != null ? mapsRef?.current?.animateToRegion(useLoc?.currentLocation, 1000) : useLoc?.currentLocation;
+    requestLocationPermission();
   }, [useLoc?.currentLocation]);
 
   useEffect(() => {
-    setLan(Number(((des?.latitude - org?.latitude) / 3).toFixed(6)));
-    setLon(Number(((des?.longitude - org?.longitude) / 3).toFixed(6)));
-    if (org?.latitude != des?.latitude && rc) {
+    setLan(Number(((des?.latitude - useLoc?.currentLocation?.latitude) / 3).toFixed(6)));
+    setLon(Number(((des?.longitude - useLoc?.currentLocation?.longitude) / 3).toFixed(6)));
+    if (useLoc?.currentLocation?.latitude != des?.latitude && rc) {
       console.log(lan, lon);
       setId(setTimeout(() => {
-        return setOrg({ ...org, latitude: (org?.latitude + lan), longitude: (org?.longitude + lon) });
+        return useLoc?.setCurrentLocation({ ...useLoc?.currentLocation, latitude: (useLoc?.currentLocation?.latitude + lan), longitude: (useLoc?.currentLocation?.longitude + lon)});
       }, 1000));
     };
 
     return () => { clearTimeout(id) };
-  }, [org, des, rc]);
+  }, [useLoc?.currentLocation, des, rc]);
 
   return (
     <View style={styles.container}>
-
-      <MapView
+      {useLoc?.currentLocation ? <>
+        <MapView
         style={styles.map}
         zoomControlEnabled={true}
         zoomEnabled={true}
@@ -80,16 +93,12 @@ export const HomeScreen = ({ navigation }: any) => {
           latitudeDelta: useLoc?.currentLocation?.latitude,
           longitudeDelta: useLoc?.currentLocation?.longitude,
         }}>
-
-        {selectedLocation && (
-          <Marker coordinate={selectedLocation} />
-        )}
-        <Marker coordinate={org} title="Me" onPress={() => console.log('darsan')} />
-        <Marker coordinate={des} title="Destination" />
+        <Marker coordinate={useLoc?.currentLocation} title="You" onPress={() => console.log('darsan')}/>
+        <Marker coordinate={des} title="Park Location"/>
         <MapViewDirections
-          origin={org}
+          origin={useLoc?.currentLocation}
           destination={des}
-          apikey={'AIzaSyAF76A1JtzoJ2hkIMZQCFegkvo9GSXlYKk'}
+          apikey={google_api}
           strokeColor='red'
           strokeWidth={2}
           mode='DRIVING'
@@ -104,11 +113,14 @@ export const HomeScreen = ({ navigation }: any) => {
       </MapView>
       <View style={[t`w-full h-full flex absolute bottom-5 right-5 justify-end items-end`]} pointerEvents="box-none">
         <View style={[t`flex-row justify-between w-[120px]`]}>
+          <View style={t`${user?.user?.type?.S == 'Owner' ? 'flex' : 'hidden'}`}>
           <TouchableOpacity onPress={() => navigation.navigate('ParkAdd')} style={[t`border-[1px] rounded-10 border-[#4448AE] bg-[#4448AE] w-[50px] h-[50px] flex justify-center items-center`]}>
             <IonIcons name='md-add-sharp' color='white' size={25} />
           </TouchableOpacity>
+          </View>
           <TouchableOpacity style={[t`border-[1px] rounded-10 border-[#4448AE] bg-[#4448AE] w-[50px] h-[50px] flex justify-center items-center`]} onPress={requestLocationPermission}>
-            <IonIcons name='locate' color='white' size={25} /></TouchableOpacity>
+            <IonIcons name='locate' color='white' size={25} />
+          </TouchableOpacity>
         </View>
       </View>
       <Modal isVisible={selectedParking}
@@ -129,7 +141,7 @@ export const HomeScreen = ({ navigation }: any) => {
                 t`bg-[#9C9FF0] w-[320px] h-[58px] rounded-[10px] flex items-center mb-[20px] justify-center`,
               ]}
               onPress={() => {
-                setSelectedParking(false);
+                setSelectedParking(false) , setRc(true);
               }}>
               <Text style={[t`text-white`]}>Reserve</Text>
             </TouchableOpacity>
@@ -153,6 +165,7 @@ export const HomeScreen = ({ navigation }: any) => {
           <IonIcons name="notifications-outline" size={24} color={"#4448AE"} />
         </TouchableOpacity>
       </View>
+      </> : <View><Text>Loading...</Text></View>}
     </View>
   );
 };

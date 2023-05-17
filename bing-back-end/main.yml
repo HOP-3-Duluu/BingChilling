@@ -33,4 +33,10 @@
           path: /sqs
           method: post
           cors: true
+  getSQS:
+    handler: src/sqs/notifsqs.NotifSqs
+    events:
+      - sqs:
+          arn: arn:aws:sqs:ap-northeast-2:236522651810:notifsSQS
+          batchSize: 1
   

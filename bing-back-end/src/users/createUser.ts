@@ -18,8 +18,8 @@ export const createUsr = async(e: APIGatewayProxyEvent): Promise<APIGatewayProxy
             const params = {
                 TableName: 'users', 
                 Item: marshall({
-                  id: uid.slice(0, 2),
-                  userId: uid.slice(0, 5),
+                  id: uid.slice(0 , 2),
+                  userId: name.toLocaleLowerCase().trim(),
                   fullName: fname,
                   name: name,
                   email: mail,

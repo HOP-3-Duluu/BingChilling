@@ -4,19 +4,26 @@ import { marshall } from "@aws-sdk/util-dynamodb";
 
 export const getUser = async(e: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     let data: any;
+    const params = {
+        TableName: 'users', 
+        IndexName: 'userId', 
+        KeyConditionExpression: '#pk = :val',
+        ExpressionAttributeNames: {
+        '#pk': 'userId',
+         },
+         ExpressionAttributeValues: marshall({
+        ':val': e?.pathParameters?.id as string,
+         })
+    }; 
+    
     try {
-        const params = {
-            TableName: 'users', 
-            Key: marshall({name: e?.pathParameters?.id})
-        }; 
-
-       data = await dynamoClient.getItem(params);
-    } catch(e) {
-        console.log(e);
+       data = await dynamoClient.query(params);
+    } catch(err) {
+        console.log(err); 
     }
     return {
         statusCode: 200,
         headers: headers,
-        body: JSON.stringify({data: data?.Item})
+        body: JSON.stringify({data: data?.Items[0]})
     };
 }; 

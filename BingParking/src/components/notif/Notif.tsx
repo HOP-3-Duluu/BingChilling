@@ -1,10 +1,21 @@
 import { Image, Text, TouchableOpacity, View } from "react-native"
 import { t } from "../../utils/style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import moment from "moment";
+import AWSAPI from "../../utils/api";
+import { useUserCont } from "../../contexts/userCont";
 
 export const Notification = ({navigation}: any) => {
+    
+    const user = useUserCont(); 
+
+    useEffect(() => {
+      //  AWSAPI.get(`notification/${user?.user?.userId}`).then((res) => {
+      //     console.log(res?.data?.data);
+      //  })
+    }, []); 
+    
     const [data , setData] = useState<any>([
         {uri: 'https://previews.123rf.com/images/davidscar/davidscar1404/davidscar140400041/27761366-a-rubber-stamp-with-an-accepted-seal.jpg', title: 'Payment Success', desc: 'Parking booking at Portley was succ...' , date: moment().calendar()},
         {uri: 'https://media.istockphoto.com/id/1222806141/photo/computer-error.jpg?s=170667a&w=0&k=20&c=8chRJ86S1WhzUtWtmsmQ2A72j_iuCyVsz0MY-3p7jbM=', title: 'Payment Success', desc: 'Parking booking at Portley was succ...', date: moment().calendar()},
@@ -15,8 +26,7 @@ export const Notification = ({navigation}: any) => {
 
     const uniqueDates = [...new Set(data.map((item: any) => item.date))];
     //back-end , notification -> type: 'Payment' -> navigate to payment section
-    //hm?
-    const NotifBanner = ({src , title , desc, date}: any) => {
+    const NotifBanner = ({src , title , desc}: any) => {
         return (
             <View style={t`flex flex-row justify-start items-center w-86 h-28 bg-white rounded-lg`}>
                <View style={t`flex flex-col justify-center items-center p-5`}>
@@ -40,7 +50,7 @@ export const Notification = ({navigation}: any) => {
                     <Text style={t`text-[#212121] font-bold`}>{date}</Text>
                     {items?.map((x: any, i: number) => {
                         return (
-                            <TouchableOpacity style={t`mt-5`} key={i}>
+                            <TouchableOpacity style={t`mt-5`} key={i} onPress={() => console.log(`BRUH`)}>
                             <NotifBanner src={x?.uri} title={x?.title} desc={x?.desc}/>
                             </TouchableOpacity>
                         )

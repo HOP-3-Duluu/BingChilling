@@ -2,10 +2,11 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { createContext, useContext, useState } from "react";
 import { asyncStorage } from '../utils/aws';
+import AWSAPI from '../utils/api';
 
 type Context = {
-    user: string;
-    setUser: React.Dispatch<React.SetStateAction<string>>;
+    user: any;
+    setUser: React.Dispatch<any>;
     isLogged: boolean;
     setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
     currentLocation: any;
@@ -20,9 +21,23 @@ export const UserContextProv = ({ children }: any) => {
     const [isLogged , setIsLogged] = useState<boolean>(false);
     
     useEffect(() => {
-        asyncStorage?.getItem('name').then((data) => {setUser(data)});
-        return user != null ? setIsLogged(true) : setIsLogged(true);
-    }, [user]); 
+        asyncStorage?.getItem('name').then(async(name) => {
+            if(name) {
+                await AWSAPI.get(`user/get/${name}`).then((res) => {
+                    if(res?.data?.data) {
+                        setUser(res?.data?.data); 
+                        setIsLogged(true);
+                    }
+                    else {
+                        setIsLogged(false);
+                    };
+                });
+            }
+            else {
+                setIsLogged(false);
+            };
+        });
+    }, [AWSAPI , asyncStorage]); 
 
     return (
         <UserContext.Provider value={{ user, setUser, isLogged, setIsLogged, currentLocation, setCurrentLocation }}>

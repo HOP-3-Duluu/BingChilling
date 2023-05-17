@@ -3,8 +3,6 @@ import { dynamoClient, headers, uid } from "../utils";
 import { marshall } from "@aws-sdk/util-dynamodb";
 
 export const ParkingSpots = async(e: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-   // console.log(date.includes('Today') ? date : moment(new Date(date)).format('LL')); 
-   // const date = moment(new Date('2023-4-19')).calendar(); 
 
    const params = {
       TableName: `parkings`, 

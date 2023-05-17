@@ -5,6 +5,8 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import { asyncStorage , userPool } from '../../utils/aws';
 import { useUserCont } from '../../contexts/userCont';
+import { google_client } from '../../../env';
+
 
 export const Login = ({ navigation }: any) => {
   const [tap, setTap] = useState<any>(0);
@@ -14,7 +16,7 @@ export const Login = ({ navigation }: any) => {
   const usr = useUserCont();
   const userData = {Username: mail, Password: pass} , details = new AuthenticationDetails(userData);
   GoogleSignin.configure({
-    webClientId: '',
+    webClientId: google_client as string,
   });
 
   const handleGoogleSignIn = async () => {
@@ -43,7 +45,7 @@ export const Login = ({ navigation }: any) => {
     try {
       const cogUser = new CognitoUser({Username: mail as string, Pool: userPool});
           return cogUser.authenticateUser(details, {
-            onSuccess: result => {console.log(result) , asyncStorage.setItem('name' , mail), usr?.setIsLogged(true)},
+            onSuccess: result => {console.log(result) , asyncStorage.setItem('name' , mail.toLowerCase().trim()), usr?.setIsLogged(true)},
             onFailure: err => console.log(`Rejected: ${err}`),
            });
     } catch(e) {
