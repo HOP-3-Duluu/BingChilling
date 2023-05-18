@@ -23,8 +23,9 @@ export const UserContextProv = ({ children }: any) => {
     useEffect(() => {
         asyncStorage?.getItem('name').then(async(name) => {
             if(name) {
-                await AWSAPI.get(`user/get/${name}`).then((res) => {
+                await AWSAPI.get(`user/get/gantur`).then((res) => {
                     if(res?.data?.data) {
+                        console.log(res?.data?.data);
                         setUser(res?.data?.data); 
                         setIsLogged(true);
                     }

@@ -62,6 +62,9 @@
 		<string>fonts/Fontisto.ttf</string>
 		<string>fonts/AntDesign.ttf</string>
 		<string>fonts/Feather.ttf</string>
+		<string>fonts/FontAwesome5_Brands.ttf</string>
+		<string>fonts/FontAwesome5_Regular.ttf</string>
+		<string>fonts/FontAwesome5_Solid.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

@@ -8,6 +8,8 @@ import MapView, { Marker } from "react-native-maps";
 import { t } from "../utils/style";
 import { useUserCont } from '../contexts/userCont';
 import Modal from 'react-native-modal';
+import AWSAPI from "../utils/api";
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { google_api } from "../../env";
 
 //       const sendNotifcation = async({title , body}: any) => {
@@ -36,6 +38,7 @@ export const HomeScreen = ({ navigation }: any) => {
   const [lon, setLon] = useState<any | number>(0);
   const [selectedParking, setSelectedParking] = useState<boolean>(false);
   const user = useUserCont();
+  const [data , setData] = useState<any | null>(null);
 
   const requestLocationPermission = async () => {
     if (Platform.OS === 'ios') {
@@ -62,25 +65,29 @@ export const HomeScreen = ({ navigation }: any) => {
 
   useEffect(() => {
     useLoc?.currentLocation != null ? mapsRef?.current?.animateToRegion(useLoc?.currentLocation, 1000) : useLoc?.currentLocation;
-    requestLocationPermission();
   }, [useLoc?.currentLocation]);
 
   useEffect(() => {
-    setLan(Number(((des?.latitude - useLoc?.currentLocation?.latitude) / 3).toFixed(6)));
-    setLon(Number(((des?.longitude - useLoc?.currentLocation?.longitude) / 3).toFixed(6)));
-    if (useLoc?.currentLocation?.latitude != des?.latitude && rc) {
-      console.log(lan, lon);
-      setId(setTimeout(() => {
-        return useLoc?.setCurrentLocation({ ...useLoc?.currentLocation, latitude: (useLoc?.currentLocation?.latitude + lan), longitude: (useLoc?.currentLocation?.longitude + lon)});
-      }, 1000));
-    };
+     AWSAPI.get('locations').then((res) => {
+          setData(res?.data?.data);
+     }).catch(err => console.error(err));
+  }, [AWSAPI]);
 
-    return () => { clearTimeout(id) };
-  }, [useLoc?.currentLocation, des, rc]);
+  // useEffect(() => {
+  //   setLan(Number(((des?.latitude - useLoc?.currentLocation?.latitude) / 3).toFixed(6)));
+  //   setLon(Number(((des?.longitude - useLoc?.currentLocation?.longitude) / 3).toFixed(6)));
+  //   if (useLoc?.currentLocation?.latitude != des?.latitude && rc) {
+  //     console.log(lan, lon);
+  //     setId(setTimeout(() => {
+  //       return useLoc?.setCurrentLocation({ ...useLoc?.currentLocation, latitude: (useLoc?.currentLocation?.latitude + lan), longitude: (useLoc?.currentLocation?.longitude + lon)});
+  //     }, 1000));
+  //   };
+
+  //   return () => { clearTimeout(id) };
+  // }, [useLoc?.currentLocation, des, rc]);
 
   return (
     <View style={styles.container}>
-      {useLoc?.currentLocation ? <>
         <MapView
         style={styles.map}
         zoomControlEnabled={true}
@@ -94,8 +101,12 @@ export const HomeScreen = ({ navigation }: any) => {
           longitudeDelta: useLoc?.currentLocation?.longitude,
         }}>
         <Marker coordinate={useLoc?.currentLocation} title="You" onPress={() => console.log('darsan')}/>
-        <Marker coordinate={des} title="Park Location"/>
-        <MapViewDirections
+        {data != null ? data?.map((x: any, i: number) => {
+            return <Marker key={i} title={x?.name?.S} coordinate={{latitude: x?.lat?.N , longitude: x?.lon?.N}} onPress={() => console.log(x)} > 
+                <Icon name="parking" color={"green"} size={30}/>
+            </Marker>
+        }): ''}
+        {/* <MapViewDirections
           origin={useLoc?.currentLocation}
           destination={des}
           apikey={google_api}
@@ -108,13 +119,12 @@ export const HomeScreen = ({ navigation }: any) => {
               console.log('Reached!');
               return clearTimeout(id);
             }
-          }} />
-        <Marker coordinate={useLoc?.currentLocation} />
+          }} /> */}
       </MapView>
       <View style={[t`w-full h-full flex absolute bottom-5 right-5 justify-end items-end`]} pointerEvents="box-none">
         <View style={[t`flex-row justify-between w-[120px]`]}>
-          <View style={t`${user?.user?.type?.S == 'Owner' ? 'flex' : 'hidden'}`}>
-          <TouchableOpacity onPress={() => navigation.navigate('ParkAdd')} style={[t`border-[1px] rounded-10 border-[#4448AE] bg-[#4448AE] w-[50px] h-[50px] flex justify-center items-center`]}>
+          <View style={t`${user?.user?.type?.S == 'Owner' ? '' : 'hidden'}`}>
+          <TouchableOpacity onPress={() => navigation.navigate('ParkAdd' , {userId: user?.user?.id?.S})} style={[t`border-[1px] rounded-10 border-[#4448AE] bg-[#4448AE] w-[50px] h-[50px] flex justify-center items-center`]}>
             <IonIcons name='md-add-sharp' color='white' size={25} />
           </TouchableOpacity>
           </View>
@@ -165,7 +175,6 @@ export const HomeScreen = ({ navigation }: any) => {
           <IonIcons name="notifications-outline" size={24} color={"#4448AE"} />
         </TouchableOpacity>
       </View>
-      </> : <View><Text>Loading...</Text></View>}
     </View>
   );
 };
