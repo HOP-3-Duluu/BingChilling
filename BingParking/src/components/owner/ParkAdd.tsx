@@ -1,13 +1,18 @@
-import {Image , KeyboardAvoidingView , Platform , StyleSheet , Text , TextInput, TouchableOpacity, View} from 'react-native';
-import {t} from '../../utils/style';
-import {useEffect, useRef, useState} from 'react';
-import ImagePicker, {ImageOrVideo} from 'react-native-image-crop-picker';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import MapView, {Marker} from 'react-native-maps';
+import { Button, Image, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { t } from '../../utils/style';
+import { SetStateAction, useEffect, useRef, useState } from 'react';
+import ImagePicker, { ImageOrVideo } from 'react-native-image-crop-picker';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import MapView, { Marker } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AWSAPI from '../../utils/api';
+import { google_api } from '../../../env';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
-export const ParkAdd = () => {
+export const ParkAdd = ({ navigation, route }: any) => {
+  const { userId } = route.params;
   const [tap, setTap] = useState<boolean>(false);
   const [selected, setSelected] = useState<boolean>(false);
   const [touch, setTouch] = useState<boolean>(false);
@@ -24,6 +29,8 @@ export const ParkAdd = () => {
   const [name, setName] = useState<any>(null)
   const [lat, setLat] = useState<any | number>(0);
   const [lon, setLon] = useState<any | number>(0);
+  const [selectedTime, setSelectedTime] = useState(new Date());
+  const [selectedTimeOne, setSelectedTimeOne] = useState(new Date());
 
   const handleTextChange = (text: string) => {
     const formattedText = text.replace(/[^0-9]/g, '');
@@ -42,10 +49,10 @@ export const ParkAdd = () => {
   };
 
   useEffect(() => {
-    if(lat != 0 && lon != 0) {
-       console.log(lat, lon , "lat lon")
+    if (lat != 0 && lon != 0) {
+      console.log(lat, lon, "lat lon")
     }
-  }, [lat , lon]);
+  }, [lat, lon]);
 
   useEffect(() => {
     currentLocation != null
@@ -67,124 +74,163 @@ export const ParkAdd = () => {
         console.log(error);
       });
   };
-  
+
+  const handleAdd = async () => {
+    await AWSAPI.post(`locations/set/${userId}`, { name: name, lat: lat, lon: lon, photos: photo?.data, phone: value, adrs: address, cost: cost, time: { open: moment(selectedTime).format('LT'), closed: moment(selectedTimeOne).format('LT') } }).then((res) => {
+      console.log(res);
+    }).catch(err => console.log(err));
+  };
+
+
+  const handleTimeChange = (event: { type: string; }, time: any) => {
+    if (event.type === 'set') {
+      setSelectedTime(time);
+    }
+  }
+
+  const handleTimeChangeOne = (event: { type: string; }, time: any) => {
+    if (event.type === 'set') {
+      setSelectedTimeOne(time);
+    }
+  };
   return (
     <View style={[t`w-full h-full bg-white items-center`]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{flex: 1}}>
-          <View style={[t`flex items-center`]}>
-            <View style={[t`flex flex-row`]}></View>
-            <View style={[t`flex flex-row`]}>
+        style={{ flex: 1 }}>
+        <View style={[t`flex items-center`]}>
+          <View style={[t`flex flex-row`]}></View>
+          <View style={[t`flex flex-row`]}>
+            <Image
+              style={[t`h-[140px] ${photo == null ? `w-[140px]` : `w-full`} flex items-center`]}
+              source={
+                photo == null
+                  ? require('../../assets/parking.jpg')
+                  : { uri: photo?.path }
+              }
+            />
+            <TouchableOpacity
+              onPress={() => selectImages()}
+              style={[t`${photo == null ? `mt-[110px] ml-[105px]` : `top-2 right-1`} absolute `]}>
               <Image
-                style={[t`h-[140px] w-[140px] flex items-center`]}
-                source={
-                  photo == null
-                    ? require('../../assets/parking.jpg')
-                    : {uri: photo?.path}
-                }
+                style={[t`h-[30px] w-[30px] rounded-[10px]`]}
+                source={require('../../assets/Exclude.jpg')}
               />
-              <TouchableOpacity
-                onPress={() => selectImages()}
-                style={[t`ml-[105px] absolute mt-[110px]`]}>
-                <Image
-                  style={[t`h-[30px] w-[30px] rounded-[10px]`]}
-                  source={require('../../assets/Exclude.jpg')}
-                />
-              </TouchableOpacity>
-            </View>
-            <View
-              style={[
-                t`${
-                  tap == true ? 'border-[#4448AE]' : 'border-[#EEEEEE]'
-                } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
-              ]}>
-              <TextInput
-                style={[t`ml-[15px] w-[308px] h-[60px] ml-[12px]`]}
-                onFocus={() => {
-                  setTap(true);
-                }}
-                onBlur={() => {
-                  setTap(false);
-                }}
-                onChangeText={(e) => setName(e)}
-                placeholder="Parking place name here"
-              />
-            </View>
-
-            <View
-              style={[
-                t`${
-                  touch == true ? 'border-[#4448AE]' : 'border-[#EEEEEE]'
-                } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
-              ]}>
-              <TextInput
-                style={[t`ml-[15px] w-[308px] h-[60px] ml-[12px]`]}
-                onFocus={() => {
-                  setTouch(true);
-                }}
-                onBlur={() => {
-                  setTouch(false);
-                }}
-                onChangeText={(e) => setAddress(e)}
-                placeholder="Put address here"
-              />
-            </View>
-
-            <View
-              style={[
-                t`${
-                  clicked == true ? 'border-[#4448AE]' : 'border-[#EEEEEE]'
-                } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
-              ]}>
-              <TextInput
-                keyboardType="number-pad"
-                style={[t`ml-[15px] w-[308px] h-[60px] ml-[12px]`]}
-                onFocus={() => {
-                  setClicked(true);
-                }}
-                onBlur={() => {
-                  setClicked(false);
-                }}
-                value={cost}
-                placeholder="Cost per hour"
-                onChangeText={handlecCostChange}
-              />
-            </View>
-
-            <View
-              style={[
-                t`${
-                  selected == true ? 'border-[#4448AE]' : 'border-[#EEEEEE]'
-                } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
-              ]}>
-              <Text style={[t`ml-[20px]`]}>+976</Text>
-              <TextInput
-                keyboardType="number-pad"
-                maxLength={8}
-                style={[t`ml-[15px] w-[308px] h-[60px] ml-[12px]`]}
-                onFocus={() => {
-                  setSelected(true);
-                }}
-                onBlur={() => {
-                  setSelected(false);
-                }}
-                value={value}
-                placeholder="Phone number"
-                onChangeText={handleTextChange}
-              />
-            </View>
+            </TouchableOpacity>
           </View>
-          <View style={[t`w-[350px] h-[250px] mt-[30px] flex items-center`]}>
+          <View
+            style={[
+              t`${tap == true ? 'border-[#4448AE]' : 'border-[#EEEEEE]'
+                } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
+            ]}>
+            <TextInput
+              style={[t`ml-[15px] w-[308px] h-[60px] ml-[12px]`]}
+              onFocus={() => {
+                setTap(true);
+              }}
+              onBlur={() => {
+                setTap(false);
+              }}
+              onChangeText={(e) => setName(e)}
+              placeholder="Parking place name here"
+            />
+          </View>
+
+          <View
+            style={[
+              t`${touch == true ? 'border-[#4448AE]' : 'border-[#EEEEEE]'
+                } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
+            ]}>
+            <TextInput
+              style={[t`ml-[15px] w-[308px] h-[60px] ml-[12px]`]}
+              onFocus={() => {
+                setTouch(true);
+              }}
+              onBlur={() => {
+                setTouch(false);
+              }}
+              onChangeText={(e) => setAddress(e)}
+              placeholder="Put address here"
+            />
+          </View>
+
+          <View
+            style={[
+              t`${clicked == true ? 'border-[#4448AE]' : 'border-[#EEEEEE]'
+                } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
+            ]}>
+            <TextInput
+              keyboardType="number-pad"
+              style={[t`ml-[15px] w-[308px] h-[60px] ml-[12px]`]}
+              onFocus={() => {
+                setClicked(true);
+              }}
+              onBlur={() => {
+                setClicked(false);
+              }}
+              value={cost}
+              placeholder="Cost per hour"
+              onChangeText={handlecCostChange}
+            />
+          </View>
+
+          <View
+            style={[
+              t`${selected == true ? 'border-[#4448AE]' : 'border-[#EEEEEE]'
+                } w-[360px] mt-[20px] h-[60px] bg-[#F8F7FD] border-[1px] rounded-[10px] flex flex-row items-center`,
+            ]}>
+            <Text style={[t`ml-[20px]`]}>+976</Text>
+            <TextInput
+              keyboardType="number-pad"
+              maxLength={8}
+              style={[t`ml-[15px] w-[308px] h-[60px] ml-[12px]`]}
+              onFocus={() => {
+                setSelected(true);
+              }}
+              onBlur={() => {
+                setSelected(false);
+              }}
+              value={value}
+              placeholder="Phone number"
+              onChangeText={handleTextChange}
+            />
+
+          </View>
+        </View>
+        <View style={[t`flex flex-col w-[350px] h-[70px] mt-[30px] flex items-center`]} >
+          <View style={[t`flex flex-row items-center`]}>
+            <Text>Opening Hours</Text>
+            <RNDateTimePicker
+              minuteInterval={30}
+              value={selectedTime}
+              mode="time"
+              is24Hour={true}
+              display="default"
+              onChange={handleTimeChange}
+            />
+          </View>
+          <View style={[t`flex flex-row items-center mt-5`]}>
+            <Text>Closing Hours</Text>
+            <RNDateTimePicker
+              minuteInterval={30}
+              value={selectedTimeOne}
+              mode="time"
+              is24Hour={true}
+              display="default"
+              onChange={handleTimeChangeOne}
+            />
+          </View>
+        </View>
+        <View style={[t`w-[350px] h-[250px] mt-[30px] flex items-center`]}>
           <TouchableOpacity style={[t`flex-row justify-center`]} onPress={() => setVisible(true)}>
-          <Text style={[t`text-10 text-[#4448AE]`]}>Add location</Text>
-            <Icon name='location' color='#4448AE' size={50}/>
+            <Text style={[t`text-10 text-[#4448AE]`]}>Add location</Text>
+            <Icon name='location' color='#4448AE' size={50} />
           </TouchableOpacity>
           <Modal style={t`flex items-center`} isVisible={visible}
-        animationIn={'slideInUp'}
-        animationOut={'slideOutDown'}>
+            animationIn={'slideInUp'}
+            animationOut={'slideOutDown'}>
             <MapView
-              style={[t`w-[350px] mt-[20px]`,styles.map]}
+              style={[t`w-[350px] mt-[20px]`, styles.map]}
               zoomControlEnabled={true}
               zoomEnabled={true}
               showsUserLocation={true}
@@ -208,7 +254,7 @@ export const ParkAdd = () => {
                 }}
                 styles={styles.autocompleteContainer}
                 query={{
-                  key: 'AIzaSyAF76A1JtzoJ2hkIMZQCFegkvo9GSXlYKk',
+                  key: google_api,
                   language: 'en',
                 }}
               />
@@ -216,28 +262,31 @@ export const ParkAdd = () => {
               <Marker coordinate={currentLocation} />
             </MapView>
             <TouchableOpacity
-                  style={[
-                    t`bg-[#EDEFFF] w-[320px] h-[58px] rounded-[20px] flex items-center justify-center top-[90.5%] z-1 absolute`,
-                  ]}
-                  onPress={() => {
-                    setVisible(false);
-                  }}>
-                  <Text style={[t`text-black`]}>Select</Text>
-                </TouchableOpacity>
+              style={[
+                t`bg-[#EDEFFF] w-[320px] h-[58px] rounded-[20px] flex items-center justify-center top-[90.5%] z-1 absolute`,
+              ]}
+              onPress={() => {
+                setVisible(false);
+              }}>
+              <Text style={[t`text-black`]}>Select</Text>
+            </TouchableOpacity>
           </Modal>
-        </View>
-      </KeyboardAvoidingView>
-        
 
-        
-        <TouchableOpacity
-          style={[
-            t`bg-[#9C9FF0] mt-[20px] w-[360px] mb-[30px] h-[58px] rounded-[10px] flex items-center justify-center`,
-          ]}
-          disabled={value.length == 8 && name != null && address != null && cost != 0 && lon != 0 && lat != 0 ? false : true}>
-          <Text style={[t`text-white`]}>Add</Text>
-        </TouchableOpacity>
-      </View>
+        </View>
+
+      </KeyboardAvoidingView>
+
+
+
+      <TouchableOpacity
+        style={[
+          t`bg-[#9C9FF0] mt-[20px] w-[360px] mb-[30px] h-[58px] rounded-[10px] flex items-center justify-center`,
+        ]}
+        onPress={()=> {handleAdd() , navigation.navigate('home') }}
+        disabled={value.length == 8 && name != null && address != null && cost != 0 && lon != 0 && lat != 0 && photo != null ? false : true}>
+        <Text style={[t`text-white`]}>Add</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
