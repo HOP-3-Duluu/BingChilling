@@ -1,9 +1,10 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { dynamoClient, headers, s3Client, uid } from "../utils";
+import { v4 as uuidv4 } from 'uuid';
 import { marshall } from "@aws-sdk/util-dynamodb";
 
 export const setLocation = async(e: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const { lat , lon , photos , phone , name , adrs , time } = JSON.parse(e?.body as string); 
+    const { lat , lon , photos , phone , name , adrs , time, cost } = JSON.parse(e?.body as string); 
     const picId = uid.slice(0 , 4);
 
     try {
@@ -20,12 +21,14 @@ export const setLocation = async(e: APIGatewayProxyEvent): Promise<APIGatewayPro
             const locParams = {
                TableName: 'locations', 
                Item: marshall({
-                 id: uid.slice(0, 4),
+                 id: uuidv4().slice(0, 4),
                  locationId: e?.pathParameters?.id, 
                  photos: `https://bing-bucket01.s3.ap-northeast-2.amazonaws.com/users/${picId}.jpeg`, 
                  phone: phone, 
                  name: name,
                  address: adrs,
+                 time: time,
+                 cost: cost,
                  lat: lat,
                  lon: lon,
                })

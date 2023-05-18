@@ -3,6 +3,8 @@ import { createContext, useContext, useState } from "react";
 interface locationCont {
     fs: boolean;
     setFs: React.Dispatch<React.SetStateAction<boolean>>;
+    des: any;
+    setDes: React.Dispatch<any>;
 };
 
 interface Props {
@@ -13,9 +15,10 @@ export const LocationContext = createContext<null | locationCont>({} as location
 
 export const LocationContextProv = ({children}: Props) => {
     const [fs , setFs] = useState<boolean>(false);
+    const [des, setDes] = useState<any | null>(null);
 
     return (
-        <LocationContext.Provider value={{fs , setFs}}>
+        <LocationContext.Provider value={{fs , setFs, des , setDes}}>
              {children}
         </LocationContext.Provider>
     );

@@ -7,3 +7,5 @@ export const styles = {
         submain: '[#CEC9F2]'
     }
 }; 
+
+export default styles;
