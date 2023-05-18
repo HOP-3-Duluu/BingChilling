@@ -13,6 +13,8 @@ import { EditProfile, Help } from '../../components/prof';
 import { ParkAdd } from '../../components/owner';
 import { SearchMain } from '../../components/search';
 import { Park } from '../../components/park/Park';
+import Verifygmail from '../../components/forgotpass/verifygmail';
+import BeforeVerify from '../../components/forgotpass/beforeVerify';
 
 export const StackScreen = () => {
 
@@ -35,6 +37,7 @@ export const StackScreen = () => {
   else {
     return (
       <Stack.Navigator initialRouteName='TutorialOne'>
+        <Stack.Screen name='BeforeVerify' component={BeforeVerify} options={{header: (e:any ) => <Header navigation={e.navigation} />}}/>
           <Stack.Screen name="TutorialOne" component={BaseOne} options={{ headerShown: false }}/>
           <Stack.Screen name="TutorialTwo" component={BaseTwo} options={{ headerShown: false }}/>
           <Stack.Screen name="TutorialThree" component={BaseThree} options={{ headerShown: false }}/>
@@ -44,6 +47,7 @@ export const StackScreen = () => {
           <Stack.Screen name="Signup" component={Signup} options={{header: (e:any ) => <Header navigation={e.navigation} />}}/>
           <Stack.Screen name="Forgot" component={Forgotpass} options={{header: (e:any ) => <Header title="Forgot Password" navigation={e.navigation} />}} />
           <Stack.Screen name="Verify" component={Verify} options={{header: (e:any ) => <Header title="Forgot Password" navigation={e.navigation} />}} />
+          <Stack.Screen name="VerifyGmail" component={Verifygmail} options={{header: (e:any ) => <Header title="Forgot Password" navigation={e.navigation} />}} />
           <Stack.Screen name="Create" component={Createnewpass} options={{header: (e:any ) => <Header title="Create new Password" navigation={e.navigation} />}} />
           <Stack.Screen name="ProfileSetUp" component={ProfSetUp} options={{header: (e:any ) => <Header title="Fill Your Profile" navigation={e.navigation} />}}/>
         </Stack.Navigator>
