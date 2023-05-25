@@ -31,7 +31,7 @@ export const ProfSetUp = ({navigation, route}: any) => {
      if(email != '') setMail(email);
   }, []);
 
-  const attributeList = [new CognitoUserAttribute({ Name: 'email', Value: mail }), new CognitoUserAttribute({ Name: 'name', Value: name })];
+  const attributeList = [new CognitoUserAttribute({ Name: 'email', Value: mail }), new CognitoUserAttribute({ Name: 'name', Value: name }), new CognitoUserAttribute({Name: 'phone_number' , Value: `+976${value}`})];
 
   const handleTextChange = (text: string) => {
     const formattedText = text.replace(/[^0-9]/g, '');

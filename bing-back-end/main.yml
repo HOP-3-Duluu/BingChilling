@@ -26,6 +26,13 @@
           path: /notification/{userId}
           method: get
           cors: true
+  deleteNotification:
+    handler: src/main/deleteNotif.deleteNotif
+    events:
+      - http:
+          path: /notif/del/{id}
+          method: delete
+          cors: true
   sendSQS: 
     handler: src/main/sendSqs.mainSqsHandler
     events:

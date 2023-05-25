@@ -1,4 +1,4 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 import { t } from "../../utils/style";
 import Icon from 'react-native-vector-icons/Ionicons';
 import AntIcon from 'react-native-vector-icons/AntDesign';
@@ -26,9 +26,19 @@ export const Park = ({navigation , route} : any) => {
                 t`bg-[#9C9FF0] w-[320px] h-[58px] rounded-[10px] flex items-center mb-[20px] justify-center`,
               ]}
               onPress={() => {
-                navigation.navigate('Home')
-                location?.setDes({latitude: Number(lat) , longitude: Number(lon)});
-                location?.setFs(true);
+                if(location?.err == false) {
+                  location?.setDes({latitude: Number(lat) , longitude: Number(lon)});
+                  location?.setFs(true);
+                  location?.setName(name);
+                  return navigation.navigate('Home');
+                }
+                else {
+                   if(location?.err == true) {
+                      location?.setFs(false); 
+                      Alert.alert(`${name} is too far away`); 
+                      return navigation.navigate('Home');
+                   }
+                }
               }}>
               <Text style={[t`text-white`]}>Reserve</Text>
             </TouchableOpacity>
@@ -39,6 +49,7 @@ export const Park = ({navigation , route} : any) => {
               onPress={() => {
                 navigation.navigate('Home')
                 location?.setFs(false);
+                location?.setHasErr(true); 
               }}>
               <Text style={[t`text-[#4448AE]`]}>Cancel</Text>
             </TouchableOpacity>

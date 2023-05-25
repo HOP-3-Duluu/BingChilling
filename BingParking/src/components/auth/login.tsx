@@ -1,4 +1,4 @@
-import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { t } from '../../utils/style';
 import { useState } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -22,20 +22,21 @@ export const Login = ({ navigation }: any) => {
   const handleGoogleSignIn = async () => {
     try {
       await new Promise(async (res, rej) => {
-        const { idToken, user } = await GoogleSignin.signIn();
-        const cogUser = new CognitoUser({
-          Username: user?.familyName as string,
-          Pool: userPool,
-        });
-
-        const userData = { Username: user?.familyName, Password: "TempPassword123!" }, details = new AuthenticationDetails(userData as any);
-        if (idToken) {
-          return cogUser.authenticateUser(details, {
-            onSuccess: result => { res(result), asyncStorage?.setItem(`name`, user?.familyName as string), usr?.setIsLogged(true)},
-            onFailure: err => rej(`Rejected: ${err}`),
+        await GoogleSignin.signIn().then((data) => { 
+          const cogUser = new CognitoUser({
+            Username:data?.user?.familyName as string,
+            Pool: userPool,
           });
-        };
-      });
+  
+          const userData = { Username: data?.user?.familyName, Password: "TempPassword123!" }, details = new AuthenticationDetails(userData as any);
+          if (data?.idToken) {
+            return cogUser.authenticateUser(details, {
+              onSuccess: result => { res(result), asyncStorage?.setItem(`name`, data?.user?.familyName as string), usr?.setIsLogged(true)},
+              onFailure: err => rej(`Rejected: ${err}`),
+            });
+           };
+          }).catch(e => console.log(e));
+        });
     } catch (error) {
       console.log(error);
     };
@@ -43,13 +44,18 @@ export const Login = ({ navigation }: any) => {
 
   const handleLogin = async() => {
     try {
-      const cogUser = new CognitoUser({Username: mail as string, Pool: userPool});
-          return cogUser.authenticateUser(details, {
-            onSuccess: result => {console.log(result) , asyncStorage.setItem('name' , mail.toLowerCase().trim()), usr?.setIsLogged(true)},
-            onFailure: err => console.log(`Rejected: ${err}`),
-           });
+      if(mail != '' && pass != '') {
+        const cogUser = new CognitoUser({Username: mail as string, Pool: userPool});
+            return cogUser.authenticateUser(details, {
+              onSuccess: result => {console.log(result) , asyncStorage.setItem('name' , mail.toLowerCase().trim()), usr?.setIsLogged(true)},
+              onFailure: err => Alert.alert(err?.message),
+             });
+      }
+      else {
+        Alert.alert(`Form is not filled up!`);
+      }
     } catch(e) {
-       console.log(e);
+       console.log(e); 
     }
   }
 

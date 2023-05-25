@@ -8,7 +8,6 @@ import { google_api } from "../../../env";
 
 const SearchMain = ({ navigation, route }: any) => {
     const useLoc = useUserCont();
-    const [savedLocation, setSavedLoaction] = useState<any>();
     const [searchHistory, setSearchHistory] = useState<any[]>([]);
 
     const storeSearchHistory = async (searchedText: any) => {
@@ -46,14 +45,10 @@ const SearchMain = ({ navigation, route }: any) => {
     }, []);
 
     const renderSearchItem = ({ item }: any) => (
-        <TouchableOpacity onPress={() => handleSearch(item)}>
-            <Text>{item?.name}</Text>
+        <TouchableOpacity onPress={() => handleSearch(item)} style={t`mb-5`}>
+            <Text style={t`text-sm text-[#4448AE] font-bold`}>{item?.name}</Text>
         </TouchableOpacity>
     );
-
-    const clearAsyncStorage = async () => {
-        await asyncStorage.clear();
-    };
 
     return (
         <View style={t`flex flex-col w-full items-center `}>
@@ -75,21 +70,15 @@ const SearchMain = ({ navigation, route }: any) => {
                     }} />
             </View>
             <View style={t`border-t-[1px] w-[380px] mt-5 border-[#EEEEEE]`}>
-                <Text style={t`flex font-bold top-4 ml-[10px]`}>Recent</Text>
-                <View style={t`flex ml-[10px] top-7`}>
+                <Text style={t`flex font-bold top-4 ml-[10px] text-lg`}>Recent</Text>
+                <View style={t`flex ml-[10px] top-10`}>
                     <FlatList
                         data={searchHistory}
                         renderItem={renderSearchItem}
                     />
-                </View>
+            <Button title="Erase" onPress={() => {asyncStorage.removeItem('searchHistory')}} color={"#4448AE"}/>
             </View>
-            <Button
-                title="Erase"
-                onPress={() => {
-                    clearAsyncStorage()
-                }
-                }
-            />
+          </View>
         </View>
     )
 };

@@ -1,4 +1,4 @@
-import { PermissionsAndroid, Platform, StyleSheet, TouchableOpacity, View } from "react-native"
+import { Alert, PermissionsAndroid, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import Geolocation from 'react-native-geolocation-service';
 import notifee from '@notifee/react-native';
 import MapViewDirections from 'react-native-maps-directions';
@@ -11,6 +11,10 @@ import AWSAPI from "../utils/api";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { google_api } from "../../env";
 import { useLocationCont } from "../contexts/locationCont";
+import { Banner } from "../components/tempo/Banner";
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['MapViewDirections Error: Error on GMAPS route request: ZERO_RESULTS']);
 
 //       const sendNotifcation = async({title , body}: any) => {
 //         await notifee.displayNotification({
@@ -28,11 +32,14 @@ import { useLocationCont } from "../contexts/locationCont";
 //       }; 
 
 export const HomeScreen = ({ navigation }: any) => {
+
   const useLoc = useUserCont();
   const mapsRef = useRef<any>('');
   const [id, setId] = useState<any | null>(null);
   const [lan, setLan] = useState<any | number>(0);
   const [lon, setLon] = useState<any | number>(0);
+  const [tm , setTm] = useState<any>(0);
+  const [dis, setDis] = useState<number>(0);
   const [rc, setRc] = useState<boolean>(false);
   const user = useUserCont();
   const location = useLocationCont();
@@ -71,25 +78,26 @@ export const HomeScreen = ({ navigation }: any) => {
 
     AWSAPI.get('locations').then((res) => {
       setData(res?.data?.data);
-    }).catch(err => console.error(err));
+    }).catch(err => console.error(err)); 
   }, [AWSAPI]);
 
   useEffect(() => {
-    setLan(Number(((location?.des?.latitude - useLoc?.currentLocation?.latitude) / 3).toFixed(6)));
-    setLon(Number(((location?.des?.longitude - useLoc?.currentLocation?.longitude) / 3).toFixed(6)));
     if (useLoc?.currentLocation?.latitude != location?.des?.latitude && rc) {
-      console.log(lan, lon);
+
+      setLan(Number(((location?.des?.latitude - useLoc?.currentLocation?.latitude) / 3).toFixed(6)));
+      setLon(Number(((location?.des?.longitude - useLoc?.currentLocation?.longitude) / 3).toFixed(6)));
+
       setId(setTimeout(() => {
         return useLoc?.setCurrentLocation({ ...useLoc?.currentLocation, latitude: (useLoc?.currentLocation?.latitude + lan), longitude: (useLoc?.currentLocation?.longitude + lon) });
       }, 1000));
-    };
+    }
 
     return () => { clearTimeout(id) };
   }, [useLoc?.currentLocation, location?.des, rc]);
 
   return (
     <View style={styles.container}>
-      <MapView
+        <MapView
         style={styles.map}
         zoomControlEnabled={true}
         zoomEnabled={true}
@@ -101,9 +109,8 @@ export const HomeScreen = ({ navigation }: any) => {
           latitudeDelta: useLoc?.currentLocation?.latitude,
           longitudeDelta: useLoc?.currentLocation?.longitude,
         }}>
-        <Marker coordinate={useLoc?.currentLocation} title="You" onPress={() => console.log('darsan')} />
         {data != null ? data?.map((x: any, i: number) => {
-          return <Marker key={i} title={x?.name?.S} coordinate={{ latitude: x?.lat?.N, longitude: x?.lon?.N }} onPress={() => navigation.navigate('Park', { name: x?.name?.S, address: x?.address?.S, lat: x?.lat?.N, lon: x?.lon?.N, cost: x?.cost?.S, phone: x?.phone?.S, photos: x?.photos?.S, time: x?.time?.M })}>
+          return <Marker key={i} title={x?.name?.S} coordinate={{ latitude: Number(x?.lat?.N), longitude: Number(x?.lon?.N) }} onPress={() => navigation.navigate('Park', { name: x?.name?.S, address: x?.address?.S, lat: x?.lat?.N, lon: x?.lon?.N, cost: x?.cost?.S, phone: x?.phone?.S, photos: x?.photos?.S, time: x?.time?.M })}>
             <Icon name="parking" color={"#4448AE"} size={30} />
           </Marker>
         }) : ''}
@@ -111,21 +118,40 @@ export const HomeScreen = ({ navigation }: any) => {
           <>
             <MapViewDirections
               origin={useLoc?.currentLocation}
-              destination={{ latitude: location?.des?.latitude, longitude: location?.des?.longitude }}
+              destination={location?.des}
               apikey={google_api}
-              strokeColor='red'
+              strokeColor='#4448AE'
               strokeWidth={2}
               mode='DRIVING'
-              onReady={(res) => {
-                console.log(`Distance: ${Math.floor(res?.distance)} , Duration: ${Math.floor(res?.duration)}`)
+              onReady={async(res) => {
+                const hours = Math.floor(res?.duration / 60), remainingMinutes = res?.duration % 60;
+                hours == 0 ? setTm(`${remainingMinutes}m`) : remainingMinutes == 0 ? setTm(`${hours}h`) : setTm(`${hours}h${Math.floor(remainingMinutes)}m`);
+                setDis(res?.distance);
+                location?.setErr(false); 
+                location?.setHasErr(false);
                 if (res?.distance == 0 && res?.duration == 0) {
                   console.log('Reached!');
+                  location?.setHasErr(true);
                   return clearTimeout(id);
-                }
-              }} />
+                };
+              }}
+              onError={(e) => {
+                  if(e) {
+                    Alert.alert(`Can't be reached.`);
+                    location?.setErr(true);
+                    location?.setHasErr(true);
+                    setTimeout(() => {
+                        location?.setErr(false);
+                    }, 500);
+                  }
+                  return clearTimeout(id); 
+              }}/>
           </> : ''}
-        <Marker title={`${user?.user?.name?.S}`} coordinate={useLoc?.currentLocation} />
+        <Marker title={`${user?.user?.name?.S}`} coordinate={useLoc?.currentLocation} pinColor="#4448AE"/>
       </MapView>
+      <View style={t`${location?.hasErr != null && location?.hasErr != true ? 'flex' : 'hidden'} absolute top-30 left-11.5 w-full`}>
+         <Banner name={location?.name} dis={(dis / 1000).toFixed(2)} dur={tm}/>
+      </View>
       <View style={[t`w-full h-full flex absolute bottom-5 right-5 justify-end items-end`]} pointerEvents="box-none">
         <View style={[t`flex-row justify-between w-[180px]`]}>
           <View style={t`${user?.user?.type?.S == 'Owner' ? '' : 'hidden'}`}>
@@ -136,9 +162,11 @@ export const HomeScreen = ({ navigation }: any) => {
           <TouchableOpacity style={[t`border-[1px] rounded-10 border-[#4448AE] bg-[#4448AE] w-[50px] h-[50px] flex justify-center items-center`]} onPress={requestLocationPermission}>
             <IonIcons name='locate' color='white' size={25} />
           </TouchableOpacity>
-          <TouchableOpacity style={[t`border-[1px] rounded-10 border-[#4448AE] bg-[#4448AE] w-[50px] h-[50px] flex justify-center items-center`]} onPress={() => setRc(true)}>
+          <View style={t`${location?.fs && location?.err == false ? 'flex' : 'hidden'}`}>
+          <TouchableOpacity style={[t`border-[1px] rounded-10 border-[#4448AE] bg-[#4448AE] w-[50px] h-[50px] flex justify-center items-center`]} onPress={() => location?.err == false && location?.hasErr == false ? setRc(true) : setRc(false)}>
             <Icon name='car' color='white' size={25} />
           </TouchableOpacity>
+          </View>
         </View>
       </View>
       <View style={t`flex flex-row absolute top-[24px] right-[14px]`}>

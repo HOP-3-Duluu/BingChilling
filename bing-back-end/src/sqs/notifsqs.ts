@@ -1,6 +1,7 @@
 import { marshall } from "@aws-sdk/util-dynamodb";
 import { SQSEvent } from "aws-lambda"
 import { dynamoClient, uid } from "../utils";
+import { v4 as uuidv4 } from 'uuid';
 
 export const NotifSqs = async(e: SQSEvent) => {
 
@@ -11,10 +12,12 @@ export const NotifSqs = async(e: SQSEvent) => {
             const params = {
                 TableName: 'notifications', 
                 Item: marshall({
-                    id: uid.slice(0 , 3),
+                    id: uuidv4().slice(0 , 2),
                     userId: userId, 
                     type: type,
-                    context: msg})}; 
+                    context: msg,
+                    when: new Date().toISOString()
+                })}; 
         
             await dynamoClient.putItem(params).then((res) => {console.log(res)});
         }

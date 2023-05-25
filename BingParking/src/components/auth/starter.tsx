@@ -15,7 +15,6 @@ export const Starter = ({navigation}: any) => {
   });
 
   const usr = useUserCont();
-  console.log(usr?.isLogged);
 
   const handleGoogleSignIn = async () => {
     try {

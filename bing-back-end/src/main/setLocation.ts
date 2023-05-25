@@ -23,7 +23,7 @@ export const setLocation = async(e: APIGatewayProxyEvent): Promise<APIGatewayPro
                Item: marshall({
                  id: uuidv4().slice(0, 4),
                  locationId: e?.pathParameters?.id, 
-                 photos: `https://bing-bucket01.s3.ap-northeast-2.amazonaws.com/users/${picId}.jpeg`, 
+                 photos: `https://bing-bucket01.s3.ap-northeast-2.amazonaws.com/locations/${picId}.jpeg`, 
                  phone: phone, 
                  name: name,
                  address: adrs,

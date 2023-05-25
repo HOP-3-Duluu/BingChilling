@@ -163,7 +163,3 @@ export const EditProfile = ({navigation}:any) => {
 };
 
 export default EditProfile;
-function setInputValue(text: string) {
-    throw new Error('Function not implemented.');
-}
-

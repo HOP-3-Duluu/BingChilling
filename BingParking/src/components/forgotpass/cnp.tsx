@@ -61,27 +61,6 @@ const Createnewpass = ({ navigation }: any) => {
                     }}>
                     <Text style={t`text-white text-[16px] leading-[22.4px]`}>Continue</Text>
                 </LinearGradient>
-                <Modal isVisible={isModalVisible} animationIn={"fadeInUp"} animationOut={"fadeOut"}>
-                    <View style={[t`bg-[#FFFFFF] flex justify-center items-center  rounded-[24px] h-[441px] w-[340px]`, { justifyContent:"space-around"}]}>
-                        <View style={t`flex justify-center items-center`}>
-                            <Image style={{ width: 236, height: 236 }} source={require('../../assets/verify.jpg')} />
-                            <Text style={t`text-[#4448AE] text-[24px] leading-[22.4px] font-bold`}>Congratulations!</Text>
-                        </View>
-                        <Text style={t`text-[#212121] text-[16px]`}>Your account is ready to use</Text>
-                        <TouchableOpacity onPress={()=> navigation.navigate('Login')} style={t`pb-[15px]`}>
-                            <LinearGradient
-                                colors={['#CEC9F2', '#9C9FF0']}
-                                style={{
-                                    width: 266, height: 58, borderRadius: 10, alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                <Text style={t`text-white text-[16px] leading-[22.4px]`}>Go to Homepage</Text>
-                            </LinearGradient>
-
-                        </TouchableOpacity>
-                    </View>
-                </Modal>
             </TouchableOpacity>
 
         </View>

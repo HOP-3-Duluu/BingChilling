@@ -21,18 +21,19 @@ export const UserContextProv = ({ children }: any) => {
     const [isLogged , setIsLogged] = useState<boolean>(false);
     
     useEffect(() => {
-        asyncStorage?.getItem('name').then(async(name) => {
+        asyncStorage?.getItem('name').then(async(name) => { 
             if(name) {
-                await AWSAPI.get(`user/get/gantur`).then((res) => {
-                    if(res?.data?.data) {
-                        console.log(res?.data?.data);
-                        setUser(res?.data?.data); 
-                        setIsLogged(true);
-                    }
-                    else {
-                        setIsLogged(false);
-                    };
-                });
+                setTimeout(async() => {
+                    await AWSAPI.get(`user/get/${name}`).then((res) => {
+                        if(res?.data?.data) {
+                            setUser(res?.data?.data); 
+                            setIsLogged(true);
+                        }
+                        else {
+                            setIsLogged(false);
+                        };
+                    });
+                }, 1500);
             }
             else {
                 setIsLogged(false);

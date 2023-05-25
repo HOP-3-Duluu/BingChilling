@@ -16,13 +16,13 @@ export const Banner = ({name , dis , dur}: any) => {
             <View style={t`flex flex-row w-4/5`}>
             <Text style={t`text-white font-bold`} numberOfLines={name?.length}>To {name}</Text>
             </View>
-            <TouchableOpacity onPress={() => location?.setFs(false)} style={[t`flex` , {left: -15}]}>
+            <TouchableOpacity onPress={() => {location?.setFs(false) , location?.setHasErr(true)}} style={[t`flex` , {left: -15}]}>
                 <Icon name="ios-close-circle" color={"red"} size={26} style={t`ml-4 mt--2`} />
             </TouchableOpacity>
             </View>
             <View style={t`flex flex-row pt-2 w-full`}>
                <Text style={t`text-white pr-5 font-bold`}>Distance: {dis} km</Text>
-               <Text style={t`text-white pr-5 font-bold`}>Duration: {dur} m</Text>
+               <Text style={t`text-white pr-5 font-bold`}>Duration: {dur}</Text>
             </View>
             </View>
         </Animated.View>

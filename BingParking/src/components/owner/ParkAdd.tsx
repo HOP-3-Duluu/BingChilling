@@ -1,6 +1,6 @@
-import { Button, Image, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { t } from '../../utils/style';
-import { SetStateAction, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ImagePicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView, { Marker } from 'react-native-maps';
@@ -23,7 +23,6 @@ export const ParkAdd = ({ navigation, route }: any) => {
   const [currentLocation, setCurrentLocation] = useState<any | null>(null);
   const mapsRef = useRef<any>('');
   const [visible, setVisible] = useState<boolean>(false);
-  // phone photo name address {lat lon} : a location
   const [address, setAddress] = useState<any>(null);
   const [cost, setCost] = useState<any>(null);
   const [name, setName] = useState<any>(null)

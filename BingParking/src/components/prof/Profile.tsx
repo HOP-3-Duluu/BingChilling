@@ -6,9 +6,11 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import { useUserCont } from '../../contexts/userCont';
+import { asyncStorage, userPool } from '../../utils/aws';
 
 export const Profile = ({navigation}: any) => {
   const [visible, setVisible] = useState<boolean>(false);
+  const usr = userPool.getCurrentUser();
   const user = useUserCont();
 
   return (
@@ -126,6 +128,8 @@ export const Profile = ({navigation}: any) => {
                     navigation.setOptions({
                       tabBarStyle: {display: 'flex'},
                     });
+                    asyncStorage.removeItem('name'); 
+                    usr?.signOut();
                     }}>
                   <Text style={[t`text-white`]}>Log out</Text>
                 </TouchableOpacity>

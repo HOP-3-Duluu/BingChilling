@@ -45,45 +45,45 @@ export const Signup = ({ navigation }: any) => {
 
   const handleGoogleSignIn = async () => {
     try {
-      await new Promise(async (res, rej) => {
-        const { idToken, user } = await GoogleSignin.signIn();
-        console.log(user);
-        const clientId = client_id as string;
-        const params = {
-          ClientId: clientId,
-          Username: user?.familyName,
-          Password: "TempPassword123!",
-          UserAttributes: [
-            { Name: "email", Value: user?.email },
-            { Name: "name", Value: user?.name }
-          ],
-        };
-
-        const cogUser = new CognitoUser({
-          Username: user?.familyName as string,
-          Pool: userPool,
-        });
-
-        const userData = { Username: user?.familyName, Password: "TempPassword123!" }, details = new AuthenticationDetails(userData as any);
-
-        cognitoClient.signUp(params as any, async (err: any, data: any) => {
-          if (err) {
-            console.log('Error signing up user:', err?.message);
-            if (err?.message == 'User already exists') {
-              return cogUser.authenticateUser(details, {
-                onSuccess: result => { res(result), asyncStorage?.setItem(`name`, user?.familyName as string), usr?.setIsLogged(true) },
-                onFailure: err => rej(`Rejected: ${err}`),
-              });
-            }
-            else {
-              const confirmParams = { UserPoolId: pool_id as string, Username: user?.familyName };
-              await cognitoClient.adminConfirmSignUp(confirmParams as any);
-              setTimeout(() => { navigation?.navigate('ProfileSetUp' , {email: user?.email}) }, 1000);
-            }
-          } else {
-            console.log('Successfully signed up Google User:', data);
-          }
-        });
+      return await new Promise(async (res, rej) => {
+        await GoogleSignin.signIn().then((data) => {
+          const clientId = client_id as string;
+          const params = {
+            ClientId: clientId,
+            Username: data?.user?.familyName,
+            Password: "TempPassword123!",
+            UserAttributes: [
+              { Name: "email", Value: data?.user?.email },
+              { Name: "name", Value: data?.user?.name }
+            ],
+          };
+  
+          const cogUser = new CognitoUser({
+            Username: data?.user?.familyName as string,
+            Pool: userPool,
+          });
+  
+          const userData = { Username: data?.user?.familyName, Password: "TempPassword123!" }, details = new AuthenticationDetails(userData as any);
+  
+          cognitoClient.signUp(params as any, async (err: any, data: any) => {
+            if (err) {
+              console.log('Error signing up user:', err?.message);
+              if (err?.message == 'User already exists') {
+                return cogUser.authenticateUser(details, {
+                  onSuccess: result => { res(result), asyncStorage?.setItem(`name`, data?.user?.familyName as string), usr?.setIsLogged(true)},
+                  onFailure: err => rej(`Rejected: ${err}`),
+                });
+              }
+              else {
+                const confirmParams = { UserPoolId: pool_id as string, Username: data?.user?.familyName };
+                await cognitoClient.adminConfirmSignUp(confirmParams as any);
+                setTimeout(() => { navigation?.navigate('ProfileSetUp' , {email: data?.user?.email}) }, 1000);
+              }
+            } else {
+              console.log('Successfully signed up Google User:', data);
+            };
+          });
+        }).catch(e => console.log(e));
       });
     } catch (error) {
       console.log(error);

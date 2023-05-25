@@ -6,7 +6,7 @@ module.exports.mainSqsHandler = async (e: APIGatewayProxyEvent): Promise<APIGate
     const { userId , type , msg , status , dataId } = JSON.parse(e?.body as string);
     const params = {
         QueueUrl: pv.SQS,
-        MessageBody: Buffer.from(JSON.stringify({ userId: userId, type: type, msg: msg , status: status , dataId: dataId})) as any
+        MessageBody: Buffer.from(JSON.stringify({ userId: userId, type: type, msg: msg})) as any
     };
 
     try {
